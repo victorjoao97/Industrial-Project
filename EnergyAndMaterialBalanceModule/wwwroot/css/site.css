@@ -1,38 +1,177 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+.main-module .container {
+    border-color: #f6fafb;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+
+.navbar {
+    background-color: #009530 !important;
+    font-weight: 200;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.navbar .navbar-brand {
+    color: #f6fafb;
+    font-weight:300;
+    
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.navbar .navbar-brand:hover,
+.navbar .navbar-brand:focus {
+    color: #03511c;
+}
+
+.navbar .navbar-text {
+    color: #f6fafb;
+}
+
+.navbar .navbar-text a {
+    color: #03511c;
+}
+
+.navbar .navbar-text a:hover,
+.navbar .navbar-text a:focus {
+    color: #03511c;
+}
+
+.navbar .navbar-nav .nav-link {
+    color: #f6fafb;
+    border-radius: .25rem;
+    margin: 0 0.25em;
+
+}
+
+.navbar .navbar-nav .nav-link:not(.disabled):hover,
+.navbar .navbar-nav .nav-link:not(.disabled):focus {
+    color: #03511c;
+}
+
+.navbar .navbar-nav .nav-item.active .nav-link,
+.navbar .navbar-nav .nav-item.active .nav-link:hover,
+.navbar .navbar-nav .nav-item.active .nav-link:focus,
+.navbar .navbar-nav .nav-item.show .nav-link,
+.navbar .navbar-nav .nav-item.show .nav-link:hover,
+.navbar .navbar-nav .nav-item.show .nav-link:focus {
+    color: #03511c;
+    background-color: #009530;
+}
+    .navbar .navbar-toggle {
+        border-color: #f6fafb;
+        color: #fff;
+    }
+
+ .navbar .navbar-toggle:hover,
+ .navbar .navbar-toggle:focus {
+    background-color: #f6fafb;
+ }
+
+.navbar .navbar-toggle .navbar-toggler-icon {
+    color: #fff;
+}
+
+.navbar .navbar-collapse,
+.navbar .navbar-form {
+    border-color: #f6fafb;
+}
+
+.navbar .navbar-link {
+    color: #f6fafb;
+}
+
+.navbar .navbar-link:hover {
+    color: #03511c;
+}
+
+@media (max-width: 575px) {
+    .navbar-expand-sm .navbar-nav .show .dropdown-menu .dropdown-item {
+        color: #f6fafb;
+    }
+
+    .navbar-expand-sm .navbar-nav .show .dropdown-menu .dropdown-item:hover,
+    .navbar-expand-sm .navbar-nav .show .dropdown-menu .dropdown-item:focus {
+        color: #03511c;
+    }
+
+    .navbar-expand-sm .navbar-nav .show .dropdown-menu .dropdown-item.active {
+        color: #03511c;
+        background-color: #009530;
+    }
+}
+
+@media (max-width: 767px) {
+    .navbar-expand-md .navbar-nav .show .dropdown-menu .dropdown-item {
+        color: #f6fafb;
+    }
+
+    .navbar-expand-md .navbar-nav .show .dropdown-menu .dropdown-item:hover,
+    .navbar-expand-md .navbar-nav .show .dropdown-menu .dropdown-item:focus {
+       color: #03511c;
+    }
+
+    .navbar-expand-md .navbar-nav .show .dropdown-menu .dropdown-item.active {
+        color: #03511c;
+        background-color: #009530;
+    }
+}
+
+@media (max-width: 991px) {
+    .navbar-expand-lg .navbar-nav .show .dropdown-menu .dropdown-item {
+        color: #f6fafb;
+    }
+
+        .navbar-expand-lg .navbar-nav .show .dropdown-menu .dropdown-item:hover,
+        .navbar-expand-lg .navbar-nav .show .dropdown-menu .dropdown-item:focus {
+            color: #03511c;
+        }
+
+        .navbar-expand-lg .navbar-nav .show .dropdown-menu .dropdown-item.active {
+            color: #03511c;
+            background-color: #009530;
+        }
+}
+
+@media (max-width: 1199px) {
+    .navbar-expand-xl .navbar-nav .show .dropdown-menu .dropdown-item {
+        color: #f6fafb;
+    }
+
+    .navbar-expand-xl .navbar-nav .show .dropdown-menu .dropdown-item:hover,
+    .navbar-expand-xl .navbar-nav .show .dropdown-menu .dropdown-item:focus {
+       color: #03511c;
+    }
+
+    .navbar-expand-xl .navbar-nav .show .dropdown-menu .dropdown-item.active {
+       color: #03511c;
+       background-color: #009530;
+    }
+}
+
+.navbar-expand .navbar-nav .show .dropdown-menu .dropdown-item {
+    color: #f6fafb;
+}
+
+.navbar-expand .navbar-nav .show .dropdown-menu .dropdown-item:hover,
+.navbar-expand .navbar-nav .show .dropdown-menu .dropdown-item:focus {
+    color: #03511c;
+}
+
+.navbar-expand .navbar-nav .show .dropdown-menu .dropdown-item.active {
+    color: #03511c;
+    background-color: #009530;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    
 }
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+        font-weight: 200;
+    }
 }
 
 .border-top {
@@ -59,8 +198,13 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-weight: 300 !important;
+}
+
+select {
+    font-weight: 300 !important;
 }
 .footer {
   position: absolute;

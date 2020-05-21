@@ -28,14 +28,11 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Resources> resources = await _resourceRepository.GetAllResources();
-            return View(resources);
-        }
-
-        public IActionResult Privacy()
-        {
+            ViewData["Resources"] = resources;
             return View();
         }
 
+       
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

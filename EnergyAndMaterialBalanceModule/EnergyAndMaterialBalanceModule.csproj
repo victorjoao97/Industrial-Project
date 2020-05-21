@@ -10,7 +10,6 @@
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Models\Function23\" />
-    <Folder Include="Views\Resource\" />
     <Folder Include="Data\Repositories\" />
   </ItemGroup>
   <ItemGroup>
