@@ -1,0 +1,19 @@
+﻿@model IEnumerable<EnergyAndMaterialBalanceModule.Models.Resources>
+@{
+    ViewData["Title"] = "Main Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<label for="resources">Resources</label>
+<select class="form-control" id="resources">
+    @foreach (var item in Model)
+    {
+        <option>
+            @Html.DisplayFor(modelItem => item.ResourceName)
+        </option>
+    }
+</select>
