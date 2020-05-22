@@ -3,22 +3,77 @@
     IEnumerable<Resources> resources = ViewData["Resources"] as IEnumerable<Resources>;
 }
 
-<div class="main-module bg-light border container">
+<div class="main-module bg-light border">
     <div class="row">
-        <div class="col-4">
+        <div class="col-4 ml-3 mb-3 mt-3">
             Groups
             <div class="row">
-
-                <div class="col border">
+                <div class="col-2 mt-5">
+                    <button type="button" class="btn btn-secondary mr-4 mb-3 mt-3"> <i class="far fa-edit"></i> </button>
+                    <button type="button" class="btn btn-secondary  mr-4 mb-3"> <i class="far fa-plus-square"></i> </button>
+                    <button type="button" class="btn btn-secondary  mr-4 mb-3"> <i class="far fa-trash-alt"></i> </button>
+                </div>
+                <div class="col-10">
 
                     @{
                         await Html.RenderPartialAsync("_ResourcesPartial", resources);
                     }
-
+                    <div class="row">
+                        <div class="col ml-3 mr-3 bg-white text-dark overflow-auto bgroups">
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            dddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                            ddd <br>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="row">
+                
+                    <label class="col  mt-4 col-form-label" for="resources">Valid disbalance:</label>
+                    <div class="col  mt-4 mr-3 bg-white text-dark">
+                        0.001
+                    </div>
+                
             </div>
         </div>
 
-    </div>
 
+    </div>
+    
 </div>
