@@ -74,6 +74,8 @@ Example: FR 1.7 - Create repository for “BGroups”
  - Add the reference to task in Jira into description of request. Also In the description of the task in Jira reference to pull request.
 
  - Write request to review in telegram and add ref to pull request.
+ 
+ - Create task for testing in the backlog
 
  - Until request will be approved by Architect and some one from Devs it cant be merged
 
