@@ -69,7 +69,7 @@ To run application:
 Branch naming starts with the number of tasks in Jira and continued with brief naming, referring to the name of task. Example: sip-255-fr-1.7-repo-four-BGroups for task:  SIP-255 FR 1.7 - Create repository for “BGroups”.
 
  - After work is done create pull request into dev
- - Name pull request similar to the task name is created to the dev branch 
+ - Name pull request similar to the task name is created to the dev branch. 
 Example: FR 1.7 - Create repository for “BGroups”
  - Add the reference to task in Jira into description of request. Also In the description of the task in Jira reference to pull request.
 
