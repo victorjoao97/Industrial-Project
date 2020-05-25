@@ -3,4 +3,14 @@
 
 // Write your JavaScript code.
 
-$("#resources").prop("selectedIndex", -1);
+$('#resources').change(function () {
+
+    window.location.href = location.protocol + '//' +
+        location.host + "/Main/Index/" + $(this).val();
+});
+
+
+$('#tree').tree({
+    uiLibrary: 'bootstrap4',
+    dataSource: [{ text: 'foo', children: [{ text: 'bar' }] }]
+});

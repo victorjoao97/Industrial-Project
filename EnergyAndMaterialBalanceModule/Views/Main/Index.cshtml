@@ -1,79 +1,95 @@
 ﻿@{
     ViewData["Title"] = "Main Page";
-    IEnumerable<Resources> resources = ViewData["Resources"] as IEnumerable<Resources>;
 }
 
-<div class="main-module bg-light border">
+<div class="main-module">
     <div class="row">
-        <div class="col-4 ml-3 mb-3 mt-3">
-            Groups
-            <div class="row">
-                <div class="col-2 mt-5">
-                    <button type="button" class="btn btn-secondary mr-4 mb-3 mt-3"> <i class="far fa-edit"></i> </button>
-                    <button type="button" class="btn btn-secondary  mr-4 mb-3"> <i class="far fa-plus-square"></i> </button>
-                    <button type="button" class="btn btn-secondary  mr-4 mb-3"> <i class="far fa-trash-alt"></i> </button>
-                </div>
-                <div class="col-10">
-
-                    @{
-                        await Html.RenderPartialAsync("_ResourcesPartial", resources);
-                    }
-                    <div class="row">
-                        <div class="col ml-3 mr-3 bg-white text-dark overflow-auto bgroups">
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            dddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                            ddd <br>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-4">
+            <div class="border bgroups">
+                <p class="mt-2 ml-3 mb-2 section-name">Groups</p>
             </div>
             <div class="row">
-                
-                    <label class="col  mt-4 col-form-label" for="resources">Valid disbalance:</label>
-                    <div class="col  mt-4 mr-3 bg-white text-dark">
-                        0.001
+                <div class="col-2 pr-none">
+                    <div class="border mt-2 text-center vertical-crd h-100">
+                        <button type="button" class="btn">
+                            <i class="far fa-edit menu"></i><br>Edit
+                        </button>
+                        <button type="button" class="btn">
+                            <i class="far fa-plus-square menu"></i><br>Add
+                        </button>
+                        <button type="button" class="btn">
+                            <i class="far fa-trash-alt menu"></i><br>Delete
+                        </button>
                     </div>
-                
+                </div>
+                <div class="col-10 pl-none">
+                    <div class="bgroups mt-2 h-100">
+                        @{
+                            await Html.RenderPartialAsync("_ResourcesPartial");
+                        }
+
+                        @{
+                            await Html.RenderPartialAsync("_TreeView");
+                        }
+
+                        @{
+                            await Html.RenderPartialAsync("_ValidDisbalance");
+                        }
+
+                    </div>
+                </div>
             </div>
         </div>
 
-
+        <div class="col-8">
+            <div class="border bgroups">
+                <p class="mt-2 ml-3 mb-2 section-name">Accounting points</p>
+            </div>
+            <div class="row">
+                <div class="col-11 pr-none">
+                    <div class="bgroups mt-2 h-100">
+                        <table class="table table-bordered">
+                            <thead class="thead">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Point</th>
+                                    <th scope="col">Direction</th>
+                                    <th scope="col">Tag</th>
+                                    <th scope="col">Period</th>
+                                    <th scope="col">Valid D</th>
+                                    <th scope="col">Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>jhgh</td>
+                                    <td>~</td>
+                                    <td>tg1</td>
+                                    <td>1h</td>
+                                    <td>0.01</td>
+                                    <td>frfrgrg</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                    <div class="col-1 pl-none">
+                        <div class="border mt-2 text-center vertical-crd h-100">
+                            <button type="button" class="btn">
+                                <i class="far fa-edit menu"></i><br>Edit
+                            </button>
+                            <button type="button" class="btn">
+                                <i class="far fa-plus-square menu"></i><br>Add
+                            </button>
+                            <button type="button" class="btn">
+                                <i class="far fa-trash-alt menu"></i><br>Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        </div>
     </div>
-    
+
 </div>
