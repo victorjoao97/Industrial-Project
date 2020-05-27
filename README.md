@@ -14,68 +14,25 @@ Energy and Material Balance Module is a browser-based WPF (XBAP) application cre
 
 * C#
 * Visual Studio
-* WPF application
-* XAML 
+* ASP.NET Core MVC
+* Razor Pages
 * Entity Framework 6
-* Prism
-* Autofac
+* Bootstrap (css framework)
+* JQuery (js framework)
 * MSSQL Server
 
 
 ### Run application
 
-The project consists of three packages.
-
-The main package: 
-* BCG_UI (views and viewmodels)
-
-Additional packages:
-* Models (models)
-* Data Access (connection with SEICBalance database)
-
 To run application:
 1. Import "SEICBalance.bak" file to database in MSSQL Server
-2. Open "BCG.sln" file in Visual Studio
-3. Open BCG_UI package
-4. Open "app.config"
-5. Change "source" in "connectionString" to your actual MSSQL Server user name 
+2. Open EnergyAndMaterialBalanceModule in Visual Studio
+3. Open "appsettings.json"
+5. Change "SEICBalanceConnection" in "ConnectionStrings" to your actual MSSQL data
 ```
-<connectionStrings>
-	<add name="SEICBalance" connectionString="data source=YOURDATA;initial catalog=SEICBalance;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" providerName="System.Data.SqlClient" />
-</connectionStrings>
+"ConnectionStrings": {
+    "SEICBalanceConnection": "Server=localhost;Database=SEICBalance;Trusted_Connection=false;User ID=sa;Password=Password;"
+  }
 ```
-6. Open Models package
-7. Open "app.config"
-8. Change "source" in "connectionString" to your actual MSSQL Server user name 
-```
-<connectionStrings>
-	<add name="SEICBalance" connectionString="data source=YOURDATA;initial catalog=SEICBalance;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" providerName="System.Data.SqlClient" />
-</connectionStrings>
-```
-9. Open DataAccess package
-10. Open "app.config"
-11. Change "source" in "connectionString" to your actual MSSQL Server user name 
-```
-<connectionStrings>
-	<add name="SEICBalance" connectionString="data source=YOURDATA;initial catalog=SEICBalance;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" providerName="System.Data.SqlClient" />
-</connectionStrings>
-```
-12. Open BCG_UI package
-13. Compile and run BCG_UI 
-14. Application will open in IE browser
-
-### Task Complition Guide
- -Implement each task in separate branch.
-Branch naming starts with the number of tasks in Jira and continued with brief naming, referring to the name of task. Example: sip-255-fr-1.7-repo-four-BGroups for task:  SIP-255 FR 1.7 - Create repository for “BGroups”.
-
- - After work is done create pull request into dev
- - Name pull request similar to the task name. 
-Example: FR 1.7 - Create repository for “BGroups”
- - Add the reference to task in Jira into description of request. Also In the description of the task in Jira reference to pull request.
-
- - Write request to review in telegram and add ref to pull request.
- 
- - Create task for testing in the backlog
-
- - Until request will be approved by Architect and some one from Devs it cant be merged
+13. Build and run EnergyAndMaterialBalanceModule
 
