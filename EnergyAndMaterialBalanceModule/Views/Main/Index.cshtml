@@ -4,50 +4,51 @@
 
 <div class="main-module">
     <div class="row">
-        <div class="col-4">
-            <div class="border bgroups">
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="border light-bground">
                 <p class="mt-2 ml-3 mb-2 section-name">Groups</p>
             </div>
             <div class="row">
-                <div class="col-2 pr-none">
+                <div class="col-lg-2 col-md-3 col-sm-3 pr-none">
                     <div class="border mt-2 text-center vertical-crd h-100">
-                        <button type="button" class="btn">
-                            <i class="far fa-edit menu"></i><br>Edit
-                        </button>
-                        <button type="button" class="btn">
-                            <i class="far fa-plus-square menu"></i><br>Add
-                        </button>
-                        <button type="button" class="btn">
-                            <i class="far fa-trash-alt menu"></i><br>Delete
-                        </button>
+                        @{
+                            await Html.RenderPartialAsync("_CreateBGroupPartial");
+                        }
+
+                        @{
+                            await Html.RenderPartialAsync("_UpdateBGroupPartial");
+                        }
+
+                        @{
+                            await Html.RenderPartialAsync("_DeleteBGroupPartial");
+                        }
                     </div>
                 </div>
-                <div class="col-10 pl-none">
-                    <div class="bgroups mt-2 h-100">
+                <div class="col-lg-10 col-md-9 col-sm-9 pl-none">
+                    <div class="light-bground mt-2 h-100">
                         @{
                             await Html.RenderPartialAsync("_ResourcesPartial");
                         }
 
                         @{
-                            await Html.RenderPartialAsync("_TreeView");
+                            await Html.RenderPartialAsync("_TreeViewPartial");
                         }
 
                         @{
-                            await Html.RenderPartialAsync("_ValidDisbalance");
+                            await Html.RenderPartialAsync("_ValidDisbalancePartial");
                         }
-
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-8">
-            <div class="border bgroups">
+        <div class="col-lg-8 col-md-8 col-sm-6">
+            <div class="border light-bground">
                 <p class="mt-2 ml-3 mb-2 section-name">Accounting points</p>
             </div>
             <div class="row">
                 <div class="col-11 pr-none">
-                    <div class="bgroups mt-2 h-100">
+                    <div class="light-bground mt-2 h-100">
                         <table class="table table-bordered">
                             <thead class="thead">
                                 <tr>
@@ -77,14 +78,14 @@
                     </div>
                     <div class="col-1 pl-none">
                         <div class="border mt-2 text-center vertical-crd h-100">
-                            <button type="button" class="btn">
-                                <i class="far fa-edit menu"></i><br>Edit
+                            <button type="button" class="btn vertical-crd-button">
+                                <i class="far fa-edit"></i><br>Edit
                             </button>
-                            <button type="button" class="btn">
-                                <i class="far fa-plus-square menu"></i><br>Add
+                            <button type="button" class="btn vertical-crd-button">
+                                <i class="far fa-plus-square"></i><br>Add
                             </button>
-                            <button type="button" class="btn">
-                                <i class="far fa-trash-alt menu"></i><br>Delete
+                            <button type="button" class="btn vertical-crd-button">
+                                <i class="far fa-trash-alt"></i><br>Delete
                             </button>
                         </div>
                     </div>
