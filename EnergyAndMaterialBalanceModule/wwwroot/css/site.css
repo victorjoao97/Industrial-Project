@@ -53,12 +53,41 @@ ul.gj-list-bootstrap li [data-role=display] {
 }
 
 
+/* Modal window styles
+-------------------------------------------------- */
+.modal-button-primary {
+    width: 50%;
+    background-color: #009530;
+    border-color: #009530;
     border-radius: 0;
-    font-size: 9pt;
-    padding-top: 30%;
-    padding-bottom: 30%;
+    color: #f6fafb;
 }
 
+.modal-button-primary:hover, .modal-button-primary:focus {
+    background-color: #03511c;
+    border-color: #03511c;
+    color: #f6fafb;
+}
+
+.modal-button-secondary {
+    width: 50%;
+    background-color: rgba(108, 117, 125,.9);
+    border-radius: 0;
+    color: #f6fafb;
+}
+
+.modal-button-secondary:hover, .modal-button-secondary:focus {
+    background-color: rgba(108, 117, 125, 1);
+    color: #f6fafb;
+}
+
+.modal-footer{
+    display: inline-flex;
+}
+
+.modal-content {
+    border-radius: 0;
+    background-clip:unset;
 }
 
 /* Vertical buttons styles
