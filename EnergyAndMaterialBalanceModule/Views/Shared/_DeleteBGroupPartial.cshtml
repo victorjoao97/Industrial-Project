@@ -17,6 +17,8 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Delete BGroup</h5>
                 </div>
                 <div class="modal-body">
+                    Do you really want to delete <b>"@selectedBGroup.BgroupName"</b> BGroup? <br>
+                    @(selectedBGroup.InverseBgroupIdparentNavigation.Count != 0 ? "This BGroup has children, they will be deleted also.": null)
                 </div>
                 <div class="modal-footer text-center">
                 </div>
