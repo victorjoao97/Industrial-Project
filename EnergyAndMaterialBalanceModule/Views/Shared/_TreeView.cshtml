@@ -1,4 +1,7 @@
-﻿
+﻿@{
+    JsonResult treeViewBGroups = (JsonResult)ViewData["BGroups"];
+
+}
 <div class="row">
     <div class="col-12">
         <div class="border border-radius-zero bg-white text-dark group-list mt-2 ml-4 mr-4">
@@ -7,3 +10,12 @@
     </div>
 </div>
 
+<script type="text/javascript">
+        var tree = $('#tree').tree({
+            uiLibrary: 'bootstrap4',
+            primaryKey: 'bgroupId',
+            textField: 'bgroupName',
+            childrenField: "inverseBgroupIdparentNavigation",
+            dataSource: @Json.Serialize(treeViewBGroups.Value) 
+         });
+</script>
