@@ -17,13 +17,15 @@ namespace EnergyAndMaterialBalanceModule.Controllers
     {
         private readonly ILogger<MainController> _logger;
         private readonly IResourcesRepository _resourceRepository;
+        private readonly IBGroupsRepository _bGroupRepository;
 
         const string SessionSelectedResource = "_Resource";
 
-        public MainController(ILogger<MainController> logger, IResourcesRepository resourceRepository)
+        public MainController(ILogger<MainController> logger, IResourcesRepository resourceRepository, IBGroupsRepository bGroupsRepository)
         {
             _logger = logger;
             _resourceRepository = resourceRepository;
+            _bGroupRepository = bGroupsRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -33,14 +35,39 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             return View();
         }
 
-       [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
             IEnumerable<Resources> resources = await _resourceRepository.GetAllResources();
             ViewData["Resources"] = resources;
             HttpContext.Session.SetInt32(SessionSelectedResource, id);
             ViewData["SelectedResource"] = HttpContext.Session.GetInt32(SessionSelectedResource);
+
+            IEnumerable<Bgroups> rootBgroups = await _bGroupRepository.GetRootBgroups(id);
+            foreach (var group in rootBgroups)
+            {
+                LoadSubGroups(group);
+            }
+
+            ViewData["BGroups"] = Json(rootBgroups);
+
             return View();
+        }
+
+        private void LoadSubGroups(Bgroups item)
+        {
+            IEnumerable<Bgroups> childBgroups = item.InverseBgroupIdparentNavigation;
+
+            if (childBgroups != null)
+            {
+                foreach (var group in childBgroups)
+                {
+                    Bgroups b = _bGroupRepository.GetById(group.BgroupId);
+                    group.InverseBgroupIdparentNavigation = b.InverseBgroupIdparentNavigation;
+                    LoadSubGroups(group);
+                }
+
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
