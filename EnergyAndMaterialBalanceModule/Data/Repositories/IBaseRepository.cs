@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace EnergyAndMaterialBalanceModule.Data.Repositories
 {
-    public interface IGenericRepository<TEntity> where TEntity : class
+    public interface IBaseRepository<TEntity> where TEntity : class
     {
         Task Create(TEntity entity);
         Task Delete(int id);

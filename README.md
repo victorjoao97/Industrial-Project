@@ -14,7 +14,7 @@ Energy and Material Balance Module is a browser-based WPF (XBAP) application cre
 
 * C#
 * Visual Studio
-* APS.NET Core MVC
+* ASP.NET Core MVC
 * Razor Pages
 * Entity Framework 6
 * Bootstrap (css framework)

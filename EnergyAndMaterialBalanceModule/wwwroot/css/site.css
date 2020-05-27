@@ -5,9 +5,83 @@ for details on configuring this project to bundle and minify static web assets. 
     border-color: #f6fafb;
 }
 
+.gj-picker-md, ul.gj-list-md li {
+    letter-spacing:0;
+    font-weight: 300;
+    font-family:inherit !important;
+}
+
+ul.gj-list-bootstrap li [data-role=display]{
+    padding:0;
+}
+.list-group-item.active {
+    background-color: #009530 !important;
+    border-color: #009530 !important;
+}
+
+.border-radius-zero {
+    border-radius: 0 !important;
+    border-color: rgba(108, 117, 125,.1) !important;
+}
+
+.section-name {
+    font-weight: 600 !important;
+}
+
 .bgroups {
+    border-color: #f8f9fa !important;
+    background-color: #f8f9fa;
+}
+
+
+.pl-none {
+    padding-left: .25rem !important;
+}
+
+.pr-none {
+    padding-right: .25rem !important;
+}
+.menu {
+    font-size: 14pt;
+}
+
+.vertical-crd {
+    height: 100%;
+    background-color: rgba(108, 117, 125,.2);
+    border-color: rgba(108, 117, 125,.2);
+}
+
+.vertical-crd button {
+    width: 100%;
+    background-color:none;
+    border: none !important;
+    border-radius: 0;
+    font-size: 9pt;
+    padding-top: 30%;
+    padding-bottom: 30%;
+}
+
+.vertical-crd button:hover, .vertical-crd button:focus {
+    background-color: #009530 ;
+    color:#f6fafb;
+}
+.vertical-crd button {
+    width: 100%;
+    background-color:none;
+    border: none !important;
+    border-radius: 0;
+    font-size: 9pt;
+    padding-top: 30%;
+    padding-bottom: 30%;
+}
+
+.vertical-crd button:hover, .vertical-crd button:focus {
+    background-color: #009530 ;
+    color:#f6fafb;
+}
+
+.group-list {
     height: 500px;
-    width: 150px;
     overflow-y: scroll;
     overflow-x: scroll;
 }

@@ -31,6 +31,9 @@ namespace EnergyAndMaterialBalanceModule
               options.UseSqlServer(connection));
             services.AddControllersWithViews();
             services.AddScoped<IResourcesRepository, ResourcesRepository>();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);   
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +53,8 @@ namespace EnergyAndMaterialBalanceModule
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthorization();
 

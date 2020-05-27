@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnergyAndMaterialBalanceModule.Data.Repositories
 {
-    public class ResourcesRepository : GenericRepository<Resources, SEICBalanceContext>, IResourcesRepository
+    public class ResourcesRepository : BaseRepository<Resources, SEICBalanceContext>, IResourcesRepository
     {
         public ResourcesRepository(SEICBalanceContext context) : base(context)
         {
@@ -19,5 +19,7 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
             return await GetAll().ToListAsync();
 
         }
+
+
     }
 }
