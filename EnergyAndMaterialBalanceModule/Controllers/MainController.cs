@@ -46,7 +46,7 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             IEnumerable<Bgroups> rootBgroups = await _bGroupRepository.GetRootBgroups(id);
             foreach (var group in rootBgroups)
             {
-                LoadSubGroups(group);
+                LoadSubBgroups(group);
             }
 
             ViewData["BGroups"] = Json(rootBgroups);
@@ -54,17 +54,17 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             return View();
         }
 
-        private void LoadSubGroups(Bgroups item)
+        private void LoadSubBgroups(Bgroups item)
         {
-            IEnumerable<Bgroups> childBgroups = item.InverseBgroupIdparentNavigation;
+            IEnumerable<Bgroups> subBgroups = item.InverseBgroupIdparentNavigation;
 
-            if (childBgroups != null)
+            if (subBgroups != null)
             {
-                foreach (var group in childBgroups)
+                foreach (var group in subBgroups)
                 {
                     Bgroups b = _bGroupRepository.GetById(group.BgroupId);
                     group.InverseBgroupIdparentNavigation = b.InverseBgroupIdparentNavigation;
-                    LoadSubGroups(group);
+                    LoadSubBgroups(group);
                 }
 
             }
