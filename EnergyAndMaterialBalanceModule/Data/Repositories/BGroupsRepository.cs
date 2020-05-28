@@ -48,5 +48,13 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
                 }
             }
         }
+
+        public override Task<Bgroups> GetById(int id)
+        {
+            return Context.Bgroups.Where(t => t.BgroupId == id)
+                .Include(t => t.Points)
+                .ThenInclude(t => t.Source)
+                .FirstAsync();
+        }
     }
 }
