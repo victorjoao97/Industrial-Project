@@ -127,6 +127,7 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         {
             var bGroup = await _bGroupsRepository.GetById(bgroupId);
             ViewData["Points"] = bGroup.Points;
+            ViewData["bGroupId"] = bgroupId;
             return View();
         }
 
