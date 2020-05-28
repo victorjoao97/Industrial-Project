@@ -54,6 +54,18 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DeletBgrou(int bgroupId)
+        {
+            try {
+                await _bGroupsRepository.Delete(bgroupId);
+            }
+            catch(Exception ex)
+            {
+                ViewData["ErrorText"] = ex.Message;
+            }
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
