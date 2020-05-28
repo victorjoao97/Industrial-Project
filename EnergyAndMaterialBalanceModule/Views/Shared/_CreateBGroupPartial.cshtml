@@ -10,6 +10,7 @@
 <!-- Modal Window-->
 <div class="modal fade" id="createBGroupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
+        <form asp-controller="MainControler" asp-action="AddBGroup" method="post" class="form-horizontal" role="form" id="create-form">
             <div class="modal-content text-left">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Add BGroup</h5>
@@ -46,6 +47,7 @@
                     <button type="button" class="btn modal-button-primary">Save</button>
                 </div>
             </div>
+        </form>
     </div>
 </div>
 
