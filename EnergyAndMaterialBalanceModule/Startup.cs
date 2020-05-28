@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Localization;
 
 namespace EnergyAndMaterialBalanceModule
 {
@@ -26,6 +29,15 @@ namespace EnergyAndMaterialBalanceModule
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Start Globalization and localization
+            services.AddLocalization(options => options.ResourcesPath = "ResourcesFolder");
+            services.AddMvc()
+              .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+              .AddDataAnnotationsLocalization();
+
+            // End Globalization and localization
+
             string connection = Configuration.GetConnectionString("SEICBalanceConnection");
             services.AddDbContext<SEICBalanceContext>(options =>
               options.UseSqlServer(connection));
@@ -39,6 +51,25 @@ namespace EnergyAndMaterialBalanceModule
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            // Start Globalization and localization
+            var supportedCultures = new[]
+                        {
+                new CultureInfo("en-US"),
+                new CultureInfo("ru-RU")
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"), // en for Dev, ru-Ru for production
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
+
+
+            // End Globalization and localization
+
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

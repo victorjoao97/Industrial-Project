@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,22 +25,11 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a class="nav-link mr-sm-2" href="#"><i class="fa fa-user"></i> Hi, username</a></li>
-                        <li><a class="nav-link mr-sm-2" href="#"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-                        <li><a class="nav-link mr-sm-2" href="#"><i class="fas fa-globe-americas"></i> English </a></li>
-                        <li><a class="nav-link mr-sm-2" href="#"><i class="fas fa-globe-europe"></i> Русский</a></li>
+                        <li><a class="nav-link mr-sm-2" href="#"><i class="fa fa-user"></i>@Localizer["HelloUser"]</a></li>
+                        <li><a class="nav-link mr-sm-2" href="#"><i class="fas fa-sign-out-alt"></i>@Localizer["Logout"]</a></li>
+                        <li><a class="nav-link mr-sm-2" href="?culture=en-US"><i class="fas fa-globe-americas"></i> English </a></li>
+                        <li><a class="nav-link mr-sm-2" href="?culture=ru-RU"><i class="fas fa-globe-europe"></i> Русский</a></li>
                     </ul>
-
-    <!--
-                        <ul class="nav navbar-nav navbar-left">
-                            <li><a class="nav-link mr-sm-2" href="#"><i class="fa fa-user"></i> Home</a></li>
-                            <li><a class="nav-link mr-sm-2" href="#"><i class="fa fa-user"></i> News</a></li>
-                            <li><a class="nav-link mr-sm-2" href="#"><i class="fas fa-sign-out-alt"></i> Log In</a></li>
-                            <li><a class="nav-link mr-sm-2" href="#"><i class="fas fa-globe-americas"></i> Log Out</a></li>
-                            <li><a class="nav-link mr-sm-2" href="#"><i class="fas fa-globe-europe"></i> About Us</a></li>
-                        </ul>
-    -->
-
 
                 </div>
             </div>
