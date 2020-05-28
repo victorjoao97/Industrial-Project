@@ -10,6 +10,7 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
     {
         IEnumerable<Bgroups> GetAllBgroups(int resourceId);
         IEnumerable<Bgroups> GetRootBGroups(int resourceId);
-        IEnumerable<Bgroups> GetChildren(int groupid);
+        Task<IEnumerable<Bgroups>> GetChildren(int groupid);
+        Task<Bgroups> GetAllChildren(int groupid);
     }
 }
