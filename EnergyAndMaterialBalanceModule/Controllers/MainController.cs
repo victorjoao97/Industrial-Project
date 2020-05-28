@@ -122,6 +122,15 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             return new JsonResult(_result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetBGroupsPoints(int resourceId, int bgroupId)
+        {
+            var bGroup = await _bGroupsRepository.GetById(bgroupId);
+            ViewData["Points"] = bGroup.Points;
+            return View();
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
