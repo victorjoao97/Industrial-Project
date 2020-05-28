@@ -19,9 +19,14 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
             return Context.Bgroups.Where(t => t.ResourceId == resourceId).Include(t => t.InverseBgroupIdparentNavigation).AsEnumerable();
         }
 
-        public IEnumerable<Bgroups> GetRootBGroups(int resourceId)
+        public async Task<IEnumerable<Bgroups>> GetRootBGroups(int resourceId)
         {
-            return Context.Bgroups.Where(t => t.ResourceId == resourceId && t.BgroupIdparent == null).Include(t => t.InverseBgroupIdparentNavigation).AsEnumerable();
+            return await GetAll().Where(b => b.ResourceId == resourceId && b.BgroupIdparent == null).Include(f => f.InverseBgroupIdparentNavigation).ToListAsync();
+        }
+
+        public Bgroups GetBGroupsById(int id)
+        {
+            return Context.Set<Bgroups>().Include(f => f.InverseBgroupIdparentNavigation).Where(b => b.BgroupId == id).First();
         }
 
         public async Task<IEnumerable<Bgroups>> GetChildrenAsync(int groupid)

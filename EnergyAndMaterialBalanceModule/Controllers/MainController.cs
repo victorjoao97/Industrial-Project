@@ -38,12 +38,13 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
-            IEnumerable<Resources> resources = await _resourceRepository.GetAllResources();
+            var resources = await _resourceRepository.GetAllResources();
             ViewData["Resources"] = resources;
             HttpContext.Session.SetInt32(SessionSelectedResource, id);
             ViewData["SelectedResource"] = HttpContext.Session.GetInt32(SessionSelectedResource);
 
-            IEnumerable<Bgroups> rootBgroups = await _bGroupRepository.GetRootBgroups(id);
+            var rootBgroups = await _bGroupRepository.GetRootBGroups(id);
+            
             foreach (var group in rootBgroups)
             {
                 LoadSubBgroups(group);
@@ -55,18 +56,17 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         }
 
         private void LoadSubBgroups(Bgroups item)
-        {
+        {   
             IEnumerable<Bgroups> subBgroups = item.InverseBgroupIdparentNavigation;
 
             if (subBgroups != null)
             {
                 foreach (var group in subBgroups)
                 {
-                    Bgroups b = _bGroupRepository.GetById(group.BgroupId);
+                    Bgroups b = _bGroupRepository.GetBGroupsById(group.BgroupId);
                     group.InverseBgroupIdparentNavigation = b.InverseBgroupIdparentNavigation;
                     LoadSubBgroups(group);
                 }
-
             }
         }
 
