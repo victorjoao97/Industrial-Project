@@ -56,12 +56,11 @@ namespace EnergyAndMaterialBalanceModule
             var supportedCultures = new[]
                         {
                 new CultureInfo("en-US"),
-                new CultureInfo("de-DE"),
                 new CultureInfo("ru-RU")
             };
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new RequestCulture("en-US"),
+                DefaultRequestCulture = new RequestCulture("en-US"), // en for Dev, ru-Ru for production
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures
             });
