@@ -14,3 +14,14 @@ $('#tree').tree({
     uiLibrary: 'bootstrap4',
     dataSource: [{ text: 'foo', children: [{ text: 'bar' }] }]
 });
+
+
+$(document).ready(function () {
+    $("#tableView tbody tr").click(function () {
+        var selected = $(this).hasClass("highlight");
+        
+        $("#tableView tr").removeClass("highlight");
+        if (!selected)
+            $(this).addClass("highlight");
+    });
+});

@@ -1,0 +1,44 @@
+﻿@{
+    IEnumerable<Points> points = ViewData["Points"] as IEnumerable<Points>;
+    int? selectedPoint = null;
+    //just hack for working without implemented ViewData["SelectedPoint"] in controller
+    if (ViewData["SelectedPoint"] == null){
+        selectedPoint = (int)ViewData["SelectedPoint"];
+    }
+}
+<div class="row">
+    <div class="col-12">
+        <div class="border border-radius-zero bg-white text-dark point-list mt-4 ml-4 mr-4 mb-3">
+            <div class="table-responsive">
+                <table id="tableView" class="table table-sm table-fixed">
+                    <thead class="thead">
+                        <tr class="d-flex">
+                            <th class="col-1">#</th>
+                            <th class="col-3">Point Name</th>
+                            <th class="col-2">Direction</th>
+                            <th class="col-1">Tag</th>
+                            <th class="col-2">Period</th>
+                            <th class="col-1">Valid D</th>
+                            <th class="col-2">Source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var point in points)
+                        {
+                            <tr class="d-flex @(selectedPoint == point.PointId ? "highlight": null)" data-pointid="@point.PointId"
+                                data-pointname="@point.PointName" data-direction="@point.Tagname" data-periodid="@point.PeriodId" data-valid="@point.ValidMistake" data-sourceid="@point.SourceId">
+                                <td class="col-1">@point.PointId</td>
+                                <td class="col-3">@point.PointName</td>
+                                <td class="col-2">@point.Direction</td>
+                                <td class="col-1">@point.Tagname</td>
+                                <td class="col-2">@point.Period.PeriodName</td>
+                                <td class="col-1">@point.ValidMistake</td>
+                                <td class="col-2">@point.Source.SourceName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
