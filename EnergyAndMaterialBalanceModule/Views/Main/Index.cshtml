@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
     ViewData["Title"] = "Main Page";
 }
 
@@ -6,7 +8,7 @@
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="border light-bground">
-                <p class="mt-2 ml-3 mb-2 section-name">Groups</p>
+                <p class="mt-2 ml-3 mb-2 section-name">@Localizer["Groups"]</p>
             </div>
             <div class="row">
                 <div class="col-lg-2 col-md-3 col-sm-3 pr-none">
@@ -44,8 +46,8 @@
 
         <div class="col-lg-8 col-md-8 col-sm-6">
             <div class="border light-bground">
-                <p class="mt-2 ml-3 mb-2 section-name">Accounting points</p>
-            </div>
+                <p class="mt-2 ml-3 mb-2 section-name">@Localizer["AccountingPoints"]</p>
+</div>
             <div class="row">
                 <div class="col-lg-11 col-md-10 col-sm-9 pr-none">
                     <div class="light-bground text-center mt-2 h-100">
@@ -57,13 +59,13 @@
                 <div class="col-lg-1 col-md-2 col-sm-3 pl-none">
                     <div class="border mt-2 text-center vertical-crd">
                         <button type="button" class="btn vertical-crd-button">
-                            <i class="far fa-edit"></i><br>Edit
+                            <i class="far fa-edit"></i><br>@Localizer["Edit"]
                         </button>
                         <button type="button" class="btn vertical-crd-button">
-                            <i class="far fa-plus-square"></i><br>Add
+                            <i class="far fa-plus-square"></i><br>@Localizer["Add"]
                         </button>
                         <button type="button" class="btn vertical-crd-button">
-                            <i class="far fa-trash-alt"></i><br>Delete
+                            <i class="far fa-trash-alt"></i><br>@Localizer["Delete"]
                         </button>
                     </div>
                 </div>
@@ -71,15 +73,15 @@
             <div class="row">
                 <div class="col-12 mt-3">
                     <div class="border light-bground">
-                        <p class="mt-2 ml-3 mb-2 section-name">Formula</p>
+                        <p class="mt-2 ml-3 mb-2 section-name">@Localizer["Formula"]</p>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 mt-2">
                     <div class="border light-bground">
-                        <p class="mt-2 ml-3 mb-2 section-name">Parameters</p>
-                    </div>
+                        <p class="mt-2 ml-3 mb-2 section-name">@Localizer["Parameters"]</p>
+</div>
                 </div>
             </div>
         </div>

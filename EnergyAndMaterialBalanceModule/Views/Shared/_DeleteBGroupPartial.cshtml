@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
     int? selectedResource = null;
     //just hack for working without implemented ViewData["SelectedResource"] in controller
     if (ViewData["SelectedResource"] != null)
@@ -8,9 +10,9 @@
     Bgroups selectedBGroup = (Bgroups)ViewData["SelectedBGroupObj"];
 }
 
-<button type="button" class="btn vertical-crd-button" data-toggle="modal" data-target="#deleteBGroupModal" disabled="@((selectedResource > 0 && selectedBGroup != null) ? null : "disabled")">
-    <i class="far fa-trash-alt"></i><br>Delete
-</button>
+    <button type="button" class="btn vertical-crd-button" data-toggle="modal" data-target="#deleteBGroupModal" disabled="@((selectedResource > 0 && selectedBGroup != null) ? null : "disabled")">
+        <i class="far fa-trash-alt"></i><br>@Localizer["Delete"]
+    </button>
 
 @if (selectedBGroup != null)
 {

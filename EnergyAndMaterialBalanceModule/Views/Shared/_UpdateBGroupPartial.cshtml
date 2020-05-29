@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
     int? selectedResource = null;
     //just hack for working without implemented ViewData["SelectedResource"] in controller
     if (ViewData["SelectedResource"] != null)
@@ -9,7 +12,7 @@
 }
 
 <button type="button" class="btn vertical-crd-button" data-toggle="modal" data-target="#updateBGroupModal" disabled="@((selectedResource > 0 && selectedBGroup != null) ? null : "disabled")">
-    <i class="far fa-edit menu"></i><br>Edit
+    <i class="far fa-edit menu"></i><br>@Localizer["Edit"]
 </button>
 
 @if (selectedBGroup != null)
