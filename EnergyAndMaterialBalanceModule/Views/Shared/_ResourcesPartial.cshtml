@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
     IEnumerable<Resources> resources = ViewData["Resources"] as IEnumerable<Resources>;
     int? selectedResource = null;
     //just hack for working without implemented ViewData["SelectedResource"] in controller
@@ -10,7 +12,7 @@
 <div class="row">
     <div class="col-12">
         <div class="mt-3 ml-4 mr-4">
-            <label for="resources">Resource:</label>
+            <label for="resources">@Localizer["Resource"]:</label>
             <select class="form-control border-radius-zero" id="resources" asp-for="@selectedResource" asp-items="@(new SelectList(resources,"ResourceId","ResourceName"))">
                 <option selected> </option>
             </select>

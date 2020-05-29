@@ -1,11 +1,13 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
     Bgroups selectedBGroup = (Bgroups)ViewData["SelectedBGroupObj"];
 }
 <div class="row">
     <div class="col-12">
         <div class="mt-3 ml-4 mr-4">
             <p>
-                Valid disbalance: <b> @(selectedBGroup != null ? selectedBGroup.ValidDisbalance : null) </b>
+                @Localizer["ValidDisbalance"]: <b> @(selectedBGroup != null ? selectedBGroup.ValidDisbalance : null) </b>
             </p>
         </div>
     </div>
