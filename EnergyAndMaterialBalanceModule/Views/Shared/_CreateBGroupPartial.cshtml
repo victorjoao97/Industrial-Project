@@ -1,5 +1,11 @@
 ﻿@{
-    int selectedResource = (int)ViewData["SelectedResource"];
+
+    int? selectedResource = null;
+    //just hack for working without implemented ViewData["SelectedResource"] in controller
+    if (ViewData["SelectedResource"] != null)
+    {
+        selectedResource = (int)ViewData["SelectedResource"];
+    }
 }
 
 <button type="button" class="btn vertical-crd-button" data-toggle="modal" data-target="#createBGroupModal" disabled="@((selectedResource > 0) ? null : "disabled")">

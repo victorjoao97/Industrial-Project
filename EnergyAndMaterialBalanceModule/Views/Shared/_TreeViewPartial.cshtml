@@ -1,5 +1,22 @@
 ﻿@{
-    JsonResult treeViewBGroups = (JsonResult)ViewData["BGroups"];
+    JsonResult treeViewBGroups = null;
+    if (ViewData["BGroups"] != null) {
+        treeViewBGroups = (JsonResult)ViewData["BGroups"];
+    }
+
+    int? selectedResource = null;
+    //just hack for working without implemented ViewData["SelectedResource"] in controller
+    if (ViewData["SelectedResource"] != null)
+    {
+        selectedResource = (int)ViewData["SelectedResource"];
+    }
+
+    int? selectedBGroup = null;
+    //just hack for working without implemented ViewData["SelectedResource"] in controller
+    if (ViewData["SelectedBGroup"] != null)
+    {
+        selectedBGroup = (int)ViewData["SelectedBGroup"];
+    }
 
 }
 <div class="row">
@@ -16,6 +33,18 @@
             primaryKey: 'bgroupId',
             textField: 'bgroupName',
             childrenField: "inverseBgroupIdparentNavigation",
-            dataSource: @Json.Serialize(treeViewBGroups.Value) 
+            dataSource: @Json.Serialize(treeViewBGroups.Value)
          });
+
+    tree.on('select', function (e, node, id) {
+
+        window.location.href = location.protocol + '//' +
+            location.host + "/Main/Index/" + @selectedResource + '/' + id;
+    });
+
+    tree.on('dataBound', function () {
+        tree.collapseAll();
+       
+    });
+
 </script>

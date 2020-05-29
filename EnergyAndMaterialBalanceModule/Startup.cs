@@ -45,6 +45,8 @@ namespace EnergyAndMaterialBalanceModule
             services.AddControllersWithViews();
             services.AddScoped<IResourcesRepository, ResourcesRepository>();
             services.AddScoped<IBGroupsRepository, BGroupsRepository>();
+            services.AddScoped<IPointsRepository, PointsRepository>();
+
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);   
             });
@@ -95,9 +97,16 @@ namespace EnergyAndMaterialBalanceModule
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("bgroup",
+                                 "Main/Index/{resourceId?}/{bgroupId?}",
+                                 defaults: new { controller = "Main", action = "Index" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Main}/{action=Index}/{id?}");
+                    pattern: "{controller=Main}/{action=Index}/{resourceId?}"
+                    );
+
+                
             });
         }
     }

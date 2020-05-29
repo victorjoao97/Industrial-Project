@@ -1,7 +1,11 @@
 ﻿@{
     IEnumerable<Resources> resources = ViewData["Resources"] as IEnumerable<Resources>;
-    int selectedResource = (int) ViewData["SelectedResource"];
-}
+    int? selectedResource = null;
+    //just hack for working without implemented ViewData["SelectedResource"] in controller
+    if (ViewData["SelectedResource"] != null)
+    {
+        selectedResource = (int)ViewData["SelectedResource"];
+    }}
 
 <div class="row">
     <div class="col-12">
