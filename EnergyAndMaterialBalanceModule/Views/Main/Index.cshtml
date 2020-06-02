@@ -47,49 +47,41 @@
                 <p class="mt-2 ml-3 mb-2 section-name">Accounting points</p>
             </div>
             <div class="row">
-                <div class="col-11 pr-none">
-                    <div class="light-bground mt-2 h-100">
-                        <table class="table table-bordered">
-                            <thead class="thead">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Point</th>
-                                    <th scope="col">Direction</th>
-                                    <th scope="col">Tag</th>
-                                    <th scope="col">Period</th>
-                                    <th scope="col">Valid D</th>
-                                    <th scope="col">Source</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>jhgh</td>
-                                    <td>~</td>
-                                    <td>tg1</td>
-                                    <td>1h</td>
-                                    <td>0.01</td>
-                                    <td>Marvin</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
-                    <div class="col-1 pl-none">
-                        <div class="border mt-2 text-center vertical-crd h-100">
-                            <button type="button" class="btn vertical-crd-button">
-                                <i class="far fa-edit"></i><br>Edit
-                            </button>
-                            <button type="button" class="btn vertical-crd-button">
-                                <i class="far fa-plus-square"></i><br>Add
-                            </button>
-                            <button type="button" class="btn vertical-crd-button">
-                                <i class="far fa-trash-alt"></i><br>Delete
-                            </button>
-                        </div>
+                <div class="col-lg-11 col-md-10 col-sm-9 pr-none">
+                    <div class="light-bground text-center mt-2 h-100">
+                        @{
+                            await Html.RenderPartialAsync("_TableViewPartial");
+                        }
                     </div>
                 </div>
+                <div class="col-lg-1 col-md-2 col-sm-3 pl-none">
+                    <div class="border mt-2 text-center vertical-crd">
+                        <button type="button" class="btn vertical-crd-button">
+                            <i class="far fa-edit"></i><br>Edit
+                        </button>
+                        <button type="button" class="btn vertical-crd-button">
+                            <i class="far fa-plus-square"></i><br>Add
+                        </button>
+                        <button type="button" class="btn vertical-crd-button">
+                            <i class="far fa-trash-alt"></i><br>Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <div class="border light-bground">
+                        <p class="mt-2 ml-3 mb-2 section-name">Formula</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-2">
+                    <div class="border light-bground">
+                        <p class="mt-2 ml-3 mb-2 section-name">Parameters</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -1,8 +1,5 @@
-﻿@{
-    int selectedResource = (int)ViewData["SelectedResource"];
-}
-
-<button type="button" class="btn vertical-crd-button" data-toggle="modal" data-target="#createBGroupModal" disabled="@((selectedResource > 0) ? null : "disabled")">
+﻿
+<button type="button" class="btn vertical-crd-button" data-toggle="modal" data-target="#createBGroupModal">
     <i class="far fa-plus-square"></i><br>Add
 </button>
 
@@ -12,7 +9,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Delete BGroup</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Create BGroup</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
