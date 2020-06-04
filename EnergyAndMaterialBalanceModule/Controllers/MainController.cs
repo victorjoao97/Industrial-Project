@@ -49,8 +49,8 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         {
             var bGroup = await _bGroupsRepository.GetById(bgroupId);
             ViewData["Points"] = bGroup.Points;
-            HttpContext.Session.SetInt32(SessionSelectedResource, resourceId);
-            ViewData["bGroupId"] = bgroupId;
+            ViewData["SelectedResource"] = resourceId;
+            ViewData["SelectedBGroup"] = bgroupId;
             return View();
         }
 

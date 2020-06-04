@@ -53,6 +53,8 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
         {
             return Context.Bgroups.Where(t => t.BgroupId == id)
                 .Include(t => t.Points)
+                .ThenInclude(c=> c.Period)
+                .Include(t => t.Points)
                 .ThenInclude(t => t.Source)
                 .FirstAsync();
         }
