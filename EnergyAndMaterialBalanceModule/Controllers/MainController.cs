@@ -55,10 +55,10 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeletBgrou(int bgroupId)
+        public async Task<IActionResult> DeleteBGroup(int bgroupId)
         {
             try {
-                await _bGroupsRepository.Delete(bgroupId);
+                _bGroupsRepository.DeleteWithDependent(bgroupId);
             }
             catch(Exception ex)
             {
