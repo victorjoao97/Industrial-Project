@@ -1,28 +1,40 @@
 ﻿
 
-<button type="button" class="btn vertical-crd-button" data-toggle="modal" data-target="#updateBGroupModal">
+<button type="button" id="btnUpdateBgroupModal" class="btn vertical-crd-button" data-toggle="modal" data-target="#updateBGroupModal" disabled="true">
     <i class="far fa-edit menu"></i><br>Edit
 </button>
 
 
 <!-- Modal Window-->
-<div class="modal fade" id="updateBGroupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Update BGroup</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer text-center">
-                <button type="button" class="btn modal-button-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn modal-button-primary">Save</button>
+<div class="modal fade" id="updateBGroupModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <form id="edit_bgroups_form">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content text-left">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="">Update BGroup</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="ebgroup_name">BGroup Name</label>
+                        <input type="text" class="form-control" id="edit_bgroup_name" placeholder="BGroup Name" name="bgroup_name" value="" required data-error='BGroup Name is required'>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="evalid_disbalance">Valid Disbalance</label>
+                        <input type="number" class="form-control" id="edit_valid_disbalance" placeholder="Valid Disbalance" name="valid_disbalance" value="" required data-error='Valid Disbalance is required'>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="modal-footer text-center">
+                    <input name="bGroupId" id="edit_bgroup_id" type="hidden" value="">
+                    <button type="button" class="btn modal-button-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn modal-button-primary">Save</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
