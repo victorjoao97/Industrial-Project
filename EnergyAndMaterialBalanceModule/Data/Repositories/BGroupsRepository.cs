@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
             return await Context.Bgroups.Where(t => t.BgroupIdparent.HasValue && t.BgroupIdparent.Value == groupid).Include(t => t.InverseBgroupIdparentNavigation).ToArrayAsync();
         }
 
-        public async Task<Bgroups> GetAllChildren(int groupid)
+        public async Task<Bgroups> GetWithAllChildren(int groupid)
         {
             var g = await GetById(groupid);
             await LoadChildren(g);
@@ -46,6 +47,34 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
                     g.InverseBgroupIdparentNavigation = children.ToList();
                     await LoadChildren(g);
                 }
+            }
+        }
+
+        public override Task<Bgroups> GetById(int id)
+        {
+            return Context.Bgroups.Where(t => t.BgroupId == id)
+                .Include(t => t.Points)
+                .ThenInclude(t => t.Source)
+                .FirstAsync();
+        }
+
+        public async Task DeleteWithDependent(int groupid)
+        {
+            var g = await GetById(groupid);
+            var visited = new Stack<Bgroups>();
+            var result = new List<Bgroups>();
+            visited.Push(g);
+            while(visited.Count > 0)
+            {
+                var current = visited.Pop();
+                foreach(var t in current.InverseBgroupIdparentNavigation)
+                    visited.Push(t);
+                result.Add(current);
+            }
+
+            foreach(var group in result)
+            {
+                Context.Bgroups.Remove(group);
             }
         }
     }

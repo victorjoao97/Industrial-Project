@@ -17,6 +17,7 @@ namespace EnergyAndMaterialBalanceModule.Controllers
     {
         private readonly ILogger<MainController> _logger;
         private readonly IResourcesRepository _resourceRepository;
+        private readonly IBGroupsRepository _bGroupsRepository;
 
         const string SessionSelectedResource = "_Resource";
 
@@ -40,6 +41,29 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             ViewData["Resources"] = resources;
             HttpContext.Session.SetInt32(SessionSelectedResource, id);
             ViewData["SelectedResource"] = HttpContext.Session.GetInt32(SessionSelectedResource);
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBGroupsPoints(int resourceId, int bgroupId)
+        {
+            var bGroup = await _bGroupsRepository.GetById(bgroupId);
+            ViewData["Points"] = bGroup.Points;
+            HttpContext.Session.SetInt32(SessionSelectedResource, resourceId);
+            ViewData["bGroupId"] = bgroupId;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteBGroup(int bgroupId)
+        {
+            try {
+                _bGroupsRepository.DeleteWithDependent(bgroupId);
+            }
+            catch(Exception ex)
+            {
+                ViewData["ErrorText"] = ex.Message;
+            }
             return View();
         }
 

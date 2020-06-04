@@ -11,6 +11,7 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
         Task<IEnumerable<Bgroups>> GetAllBgroups(int resourceId);
         Task<IEnumerable<Bgroups>> GetRootBGroups(int resourceId);
         Task<IEnumerable<Bgroups>> GetChildrenAsync(int groupid);
-        Task<Bgroups> GetAllChildren(int groupid);
+        Task<Bgroups> GetWithAllChildren(int groupid);
+        Task DeleteWithDependent(int groupid);
     }
 }
