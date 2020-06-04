@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using EnergyAndMaterialBalanceModule.Models;
 using EnergyAndMaterialBalanceModule.Data.Repositories;
 using Microsoft.AspNetCore.Http;
+using EnergyAndMaterialBalanceModule.Models.Form;
 
 namespace EnergyAndMaterialBalanceModule.Controllers
 {
@@ -61,6 +62,41 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             _result.SelectedResource = selectedResource;
             _result.SelectedBGroup = selectedBGroup;
             _result.Points = await _pointsRepository.GetAlPonts(selectedBGroup.BgroupId);
+            return new JsonResult(_result);
+        }
+
+        [HttpPost]
+        [Route("createBgroups")]
+        public async Task<IActionResult> CreateBgroups(CreateBgroupsFm model)
+        {
+            Bgroups newBgroups = new Bgroups();
+            newBgroups.BgroupName = model.bgroupName;
+            newBgroups.ValidDisbalance = model.validDisbalance;
+            newBgroups.ResourceId = (short) model.resourceId;
+
+            if (model.bGroupIdParent != null)
+            {
+                newBgroups.BgroupIdparent = model.bGroupIdParent;
+            }
+
+            await _bgroupsRepository.Create(newBgroups);
+            _result.error = false;
+            _result.message = "Success";
+            return new JsonResult(_result);
+        }
+
+        [HttpPost]
+        [Route("updateBgroups")]
+        public async Task<IActionResult> UpdateBgroups(UpdateBgroupsFm model)
+        {
+            Bgroups bgroups = await _bgroupsRepository.GetById(model.bgroupId);
+            bgroups.BgroupName = model.bgroupName;
+            bgroups.ValidDisbalance = model.validDisbalance;
+
+            await _bgroupsRepository.Update(bgroups);
+            _result.error = false;
+            _result.message = "Success";
+            _result.SelectedBGroup = bgroups;
             return new JsonResult(_result);
         }
 

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EnergyAndMaterialBalanceModule.Data.Repositories
@@ -52,6 +51,20 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
                     await LoadChildren(g);
                 }
             }
+        }
+
+        public async Task<Bgroups> Create(Bgroups bgroups)
+        {
+            Context.Bgroups.Add(bgroups);
+            await Context.SaveChangesAsync();
+            return bgroups;
+        }
+
+        public async Task<Bgroups> Update(Bgroups bgroups)
+        {
+            Context.Entry(bgroups).State = EntityState.Modified;
+            await Context.SaveChangesAsync();
+            return bgroups;
         }
     }
 }
