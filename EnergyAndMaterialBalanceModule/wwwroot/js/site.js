@@ -200,6 +200,32 @@ function row(point, i) {
 function buttonDisabled(button, state) {
     $(button).prop('disabled', state);
 }
+
+//setting create BGroup form
+
+function showCreateBGroupModal() {
+    $("#createBGgroupName").val("");
+    $("#createValidDisbalance").val("");
+    $('#createResourceId').val(data.selectedResource.resourceId);  
+
+    if (data.selectedBGroup != null) {
+        $('#asChild').val(data.selectedBGroup.bgroupId);
+        $('#sameLevel').val(data.selectedBGroup.bgroupIdparent);
+        $('#asChild').prop('disabled', false);
+        $('#asChild').prop('checked', false);
+        $('#sameLevel').prop('checked', false);
+        $('#sameLevel').prop('disabled', false);
+    }
+    else {
+        $('#sameLevel').val(null);
+        $('#asChild').val(null);
+        $('#asChild').prop('disabled', true);
+        $('#asChild').prop('checked', false);
+        $('#sameLevel').prop('checked', true);
+        $('#sameLevel').prop('disabled', true);
+    }
+}
+
 function showUpdateBGroupModal() {
     $('#updateBGroupId').val(data.selectedBGroup.bgroupId);
     $('#updateBGroupName').val(data.selectedBGroup.bgroupName);
@@ -214,6 +240,33 @@ function showMessage(error, message) {
     $("#message").show().delay(5000).fadeOut();
 
 }
+// create new BGroup
+//todo: add validation, show error messages from the server in modal window, select new BGroup,
+//show it in the tree view
+
+async function CreateBGroup() {
+    bGroupNameVal = $("#createBGgroupName").val();
+    validDisbalanceVal = $("#createValidDisbalance").val();
+    resourceIdVal = $("#createResourceId").val();
+    bGroupIdParentVal = $('input:radio[name="createBGroupIdParent"]:checked').val();
+    console.log(bGroupIdParentVal);
+    $.post("/main/CreateBGroup/", {
+        bgroupName: bGroupNameVal,
+        validDisbalance: validDisbalanceVal,
+        resourceId: resourceIdVal,
+        bGroupIdParent: bGroupIdParentVal
+    }).done(function (result) {
+        console.log(result);
+        $('#createBGroupModal').modal('hide');
+        GetBGroups(resourceIdVal);
+        clearTableView();
+        clearValidDisbalance();
+        showMessage(result.error, result.message);
+    }).fail(function (result) {
+        console.log("error!")
+    });
+}
+
 // update selected BGroup
 //todo: add validation, show error messages from the server in modal window, select updated BGroup,
 //show it in the tree view
@@ -264,9 +317,20 @@ $(document).ready(function () {
     });
 
 });
+    $('#btnCreateBGroupModal').click(function () {
+        showCreateBGroupModal();
+    });
+
     $('#btnUpdateBGroupModal').click(function () {
         showUpdateBGroupModal();
     });
+
+    $('#createBGroupForm').on('submit', function (e) {
+        console.log("SUBMIT");
+        e.preventDefault();
+        CreateBGroup();
+    });
+
     $('#updateBGroupForm').on('submit', function (e) {
         console.log("Submit Update");
         e.preventDefault();
