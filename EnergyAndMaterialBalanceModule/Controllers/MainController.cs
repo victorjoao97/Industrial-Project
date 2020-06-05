@@ -70,6 +70,24 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         }
 
         [HttpPost]
+        [Route("deleteBGroup")]
+        public async Task<IActionResult> DeleteBGroup(int bgroupId)
+        {
+            try
+            {
+               await _bgroupsRepository.DeleteWithDependent(bgroupId);
+            }
+            catch (Exception ex)
+            {
+                _result.error = true;
+                _result.message = "Error";
+            }
+            _result.error = false;
+            _result.message = "Success";
+            return new JsonResult(_result);
+        }
+
+        [HttpPost]
         [Route("createBGroup")]
         public async Task<IActionResult> CreateBgroups(CreateBgroupsFm model)
         {

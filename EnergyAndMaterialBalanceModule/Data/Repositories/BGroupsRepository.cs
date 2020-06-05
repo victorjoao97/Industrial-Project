@@ -53,5 +53,25 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
                 }
             }
         }
+        public async Task DeleteWithDependent(int groupid)
+        {
+            var g = await GetById(groupid);
+
+            foreach (var p in g.Points)
+            {
+                foreach (var pr in p.Rules)
+                {
+                    var prules = Context.Prule.Where(t => t.RuleId == pr.RuleId).ToList();
+                    Context.Prule.RemoveRange(prules);
+                }
+                Context.Rules.RemoveRange(p.Rules);
+            }
+
+            Context.Points.RemoveRange(g.Points);
+            Context.Bgroups.RemoveRange(g.InverseBgroupIdparentNavigation);
+            Context.Bgroups.Remove(g);
+
+            Context.SaveChanges();
+        }
     }
 }
