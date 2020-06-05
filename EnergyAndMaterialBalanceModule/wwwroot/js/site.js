@@ -61,6 +61,24 @@ async function GetPoints(bgroupId) {
         console.log("Cannot get Points for selected BGroup!");
     }
 }
+
+// delete selected BGroup
+//todo: implement and add messages for error and success
+
+async function DeleteBGroup() {
+    bgroupsIdVal = $("#deleteBGroupId").val();
+    console.log(bgroupsIdVal);
+    $.post("/main/deleteBGroup/", {
+        bgroupId: bgroupsIdVal,
+    }).done(function (result) {
+        $('#deleteBGroupModal').modal('hide');
+        GetBGroups(data.selectedResource.resourceId);
+        clearTableView();
+        clearValidDisbalance();
+        showMessage(result.error, result.message);
+    }).fail(function (result) {
+        console.log("error!")
+    });
 }
 
 // function for setting selected Resource
@@ -231,6 +249,7 @@ function showUpdateBGroupModal() {
     $('#updateBGroupName').val(data.selectedBGroup.bgroupName);
     $('#updateValidDisbalance').val(data.selectedBGroup.validDisbalance);
 }
+
 function showMessage(error, message) {
     if (!error) 
         $("#message").addClass('alert-success');
@@ -240,6 +259,20 @@ function showMessage(error, message) {
     $("#message").show().delay(5000).fadeOut();
 
 }
+
+//setting delete BGroup form
+
+function showDeleteBGroupModal() {
+    var selectedBGroup = data.selectedBGroup;
+    $('#deleteBGroupName').text(selectedBGroup.bgroupName);
+    $('#deleteBGroupChildren').hide();
+    var hasChildren = selectedBGroup.inverseBgroupIdparentNavigation.length;
+    if (hasChildren > 0)
+        $('#deleteBGroupChildren').show();
+    $('#deleteBGroupId').val(selectedBGroup.bgroupId);
+}
+
+
 // create new BGroup
 //todo: add validation, show error messages from the server in modal window, select new BGroup,
 //show it in the tree view
@@ -316,7 +349,10 @@ $(document).ready(function () {
         clearValidDisbalance();
     });
 
-});
+    $('#btnDeleteBGroupModal').on('click', function () {
+        showDeleteBGroupModal();
+    });
+
     $('#btnCreateBGroupModal').click(function () {
         showCreateBGroupModal();
     });
@@ -336,6 +372,13 @@ $(document).ready(function () {
         e.preventDefault();
         UpdateBGroup();
     });
+
+    $('#deleteBGroupForm').on('submit', function (e) {
+        console.log("SUBMIT");
+        e.preventDefault();
+        DeleteBGroup();
+    });
+
     
 
 });
