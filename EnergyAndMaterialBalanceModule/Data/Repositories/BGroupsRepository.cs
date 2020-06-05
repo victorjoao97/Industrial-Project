@@ -16,7 +16,7 @@ namespace EnergyAndMaterialBalanceModule.Data.Repositories
 
         public virtual async Task<Bgroups> GetById(int id)
         {
-            return await Context.Set<Bgroups>().Where(t=> t.BgroupId == id).Include(t => t.Resource).Include(t=> t.Points).FirstOrDefaultAsync();
+            return await Context.Set<Bgroups>().Where(t=> t.BgroupId == id).Include(t=> t.InverseBgroupIdparentNavigation).Include(t => t.Points).ThenInclude(t => t.Rules).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Bgroups>> GetAllBgroups(int resourceId)
