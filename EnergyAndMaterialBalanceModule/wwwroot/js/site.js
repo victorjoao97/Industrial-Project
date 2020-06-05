@@ -4,22 +4,47 @@
 // Write your JavaScript code.
 
 
+var tree = "";
+
+var data = {
+    error: null,
+    message: null,
+    selectedResource: null,
+    bgroups: null,
+    selectedBGroup: null,
+    points: null,
+    selectedPoint: null,
+    sources: null,
+    periods: null,
+    tags: null,
+    formula: null,
+    parameters: null
+};
+
 // getting all bgroups by selected Resource
+//todo: add messages for error
 
 async function GetBGroups(resourceId) {
-    const response = await fetch("main/getBGroup/" + resourceId, {
+    const response = await fetch("main/getBGroups/" + resourceId, {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
     if (response.ok === true) {
         const result = await response.json();
-        fillSelect(result.selectedResource.resourceId);
+        console.log(result);
+        fillSelect(result.selectedResource);
         fillTreeView(result.bgroups);
-        clearTableView();
+        buttonDisabled('#btnCreateBGroupModal', false);
+        buttonDisabled('#btnDeleteBGroupModal', true);
+        buttonDisabled('#btnUpdateBGroupModal', true);
+    }
+    else {
+        console.log("Cannot get BGroups for selected Resource!");
     }
 }
 
 // getting all points by selected BGroup
+//todo: add messages for error
 
 async function GetPoints(bgroupId) {
     const response = await fetch("main/getPoints/" + bgroupId, {
@@ -30,30 +55,41 @@ async function GetPoints(bgroupId) {
         const result = await response.json();
         clearTableView();
         fillTableView(result.points);
-        fillValidDisbalance(result.selectedBGroup.validDisbalance);
+        fillValidDisbalance(result.selectedBGroup);
     }
+    else {
+        console.log("Cannot get Points for selected BGroup!");
+    }
+}
 }
 
 // function for setting selected Resource
 
-function fillSelect(resourceId) {
-    selectElement('resources', resourceId);
+function fillSelect(selectedResource) {
+    selectElement('resources', selectedResource.resourceId);
+    data.selectedResource = selectedResource;
 }
 
 // creating tree view component with BGroups
 
 function fillTreeView(bgroups) {
-    var tree = $('#tree').tree({
+    data.bgroups = bgroups;
+    tree = $('#tree').tree({
         uiLibrary: 'bootstrap4',
         primaryKey: 'bgroupId',
         textField: 'bgroupName',
         childrenField: "inverseBgroupIdparentNavigation",
         select: function (e, node, id) {
             GetPoints(id);
+            buttonDisabled('#btnDeleteBGroupModal', false);
+            buttonDisabled('#btnUpdateBGroupModal', false);
+
         },
         unselect: function (e, node, id) {
             clearTableView();
             clearValidDisbalance();
+            buttonDisabled('#btnDeleteBGroupModal', true);
+            buttonDisabled('#btnUpdateBGroupModal', true);
         }
     });
 
@@ -69,14 +105,16 @@ function selectElement(id, valueToSelect) {
 
 // setting valid disbalance for selected BGroup
 
-function fillValidDisbalance(data) {
-    $('#validDisbalance').text(data);
+function fillValidDisbalance(selectedBGroup) {
+    data.selectedBGroup = selectedBGroup;
+    $('#validDisbalance').text(selectedBGroup.validDisbalance);
 }
 
 // creating table view component (tbody) with Points
 
 function fillTableView(points) {
-    var tableView = document.getElementById("tableView");
+    data.points = points;
+    var tableView = document.getElementById('tableView');
     var rows = tableView.getElementsByTagName('tbody')[0];
     points.forEach((point, i) => {
         rows.append(row(point, i));
@@ -86,81 +124,137 @@ function fillTableView(points) {
 // deleting table view component 
 
 function clearTableView() {
+    data.points = null;
     $('#tableView tbody > tr').remove();
+
 }
 
 // deleting valid disbalance 
 
 function clearValidDisbalance() {
-    fillValidDisbalance("");
+    data.selectedBGroup = null;
+    $('#validDisbalance').text("");
 }
 
 // deleting tree view component 
 
 function clearTreeView() {
+    data.bgroups = null;
     fillTreeView([]);
 }
 
 //setting points' data in table view component
 
 function row(point, i) {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-rowid', point.pointId);
+    tr.className = 'd-flex';
+    const trData = [
+        {
+            col: 'col-1',
+            data: i + 1
+        },
 
-    const tr = document.createElement("tr");
-    tr.setAttribute("data-rowid", point.pointId);
-    tr.className = "d-flex";
+        {
+            col: 'col-3',
+            data: point.pointName
+        },
 
-    const idTd = document.createElement("td");
-    idTd.append(i + 1);
-    idTd.className = "col-1";
-    tr.append(idTd);
+        {
+            col: 'col-2',
+            data: point.direction
+        },
 
-    const nameTd = document.createElement("td");
-    nameTd.append(point.pointName);
-    nameTd.className = "col-3";
-    tr.append(nameTd);
+        {
+            col: 'col-1',
+            data: point.tagname
+        },
 
-    const directionTd = document.createElement("td");
-    directionTd.append(point.direction);
-    directionTd.className = "col-2";
-    tr.append(directionTd);
+        {
+            col: 'col-2',
+            data: point.period.periodName
+        },
 
-    const tagTd = document.createElement("td");
-    tagTd.append(point.tagname);
-    tagTd.className = "col-1";
-    tr.append(tagTd);
+        {
+            col: 'col-1',
+            data: point.validMistake
+        },
 
-    const periodTd = document.createElement("td");
-    periodTd.append(point.period.periodName);
-    periodTd.className = "col-2";
-    tr.append(periodTd);
+        {
+            col: 'col-2',
+            data: point.source.sourceName
+        },
 
-    const validMistakeTd = document.createElement("td");
-    validMistakeTd.append(point.validMistake);
-    validMistakeTd.className = "col-1";
-    tr.append(validMistakeTd);
-
-    const sourceTd = document.createElement("td");
-    sourceTd.append(point.source.sourceName);
-    sourceTd.className = "col-2";
-    tr.append(sourceTd);
-
+    ];
+    trData.forEach((tdData) => {
+        const td = document.createElement('td');
+        td.append(tdData.data);
+        td.className = tdData.col;
+        tr.append(td);
+    });
     return tr;
 }
 
+//setting buttons disabled
+
+function buttonDisabled(button, state) {
+    $(button).prop('disabled', state);
+}
+function showUpdateBGroupModal() {
+    $('#updateBGroupId').val(data.selectedBGroup.bgroupId);
+    $('#updateBGroupName').val(data.selectedBGroup.bgroupName);
+    $('#updateValidDisbalance').val(data.selectedBGroup.validDisbalance);
+}
+function showMessage(error, message) {
+    if (!error) 
+        $("#message").addClass('alert-success');
+    else
+        $("#message").addClass('alert-warning');
+    $("#message").text(message);
+    $("#message").show().delay(5000).fadeOut();
+
+}
+// update selected BGroup
+//todo: add validation, show error messages from the server in modal window, select updated BGroup,
+//show it in the tree view
+
+async function UpdateBGroup() {
+    bGroupNameVal = $("#updateBGroupName").val();
+    validDisbalanceVal = $("#updateValidDisbalance").val();
+    bgroupsIdVal = $("#updateBGroupId").val();
+
+    console.log(bgroupsIdVal);
+    $.post("/main/UpdateBGroup/", {
+        bgroupId: bgroupsIdVal,
+        bgroupName: bGroupNameVal,
+        validDisbalance: validDisbalanceVal
+    }).done(function (result) {
+        console.log(result);
+        $('#updateBGroupModal').modal('hide');
+        GetBGroups(result.selectedBGroup.resourceId);
+        clearTableView();
+        clearValidDisbalance();
+        showMessage(result.error, result.message);
+    }).fail(function (result) {
+        console.log("error!")
+    });
+}
 
 $(document).ready(function () {
-    $("#tableView").delegate("tr", "click", function () {
-        var selected = $(this).hasClass("highlight");
+    $('#tableView').delegate('tr', 'click', function () {
+        var selected = $(this).hasClass('highlight');
 
-        $("#tableView tr").removeClass("highlight");
+        $('#tableView tr').removeClass('highlight');
         if (!selected)
-            $(this).addClass("highlight");
+            $(this).addClass('highlight');
     });
 
     $('#resources').change(function () {
-        if ($(this).val() === "") {
-            clearTableView();
+        if ($(this).val() === '') {
             clearTreeView();
+            buttonDisabled('#btnCreateBGroupModal', true);
+            buttonDisabled('#btnDeleteBGroupModal', true);
+            buttonDisabled('#btnUpdateBGroupModal', true);
         }
         else {
             GetBGroups($(this).val());
@@ -170,4 +264,16 @@ $(document).ready(function () {
     });
 
 });
+    $('#btnUpdateBGroupModal').click(function () {
+        showUpdateBGroupModal();
+    });
+    $('#updateBGroupForm').on('submit', function (e) {
+        console.log("Submit Update");
+        e.preventDefault();
+        UpdateBGroup();
+    });
     
+
+});
+
+

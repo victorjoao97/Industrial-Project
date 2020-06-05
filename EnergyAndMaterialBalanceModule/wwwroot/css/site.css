@@ -38,6 +38,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 ul.gj-list-bootstrap li [data-role=display] {
     padding: 0;
+    font-size: 0.95rem !important;
 }
 
 .list-group-item.active {
@@ -143,19 +144,19 @@ thead, tbody tr {
     background-color: none;
     border: none !important;
     border-radius: 0;
-    font-size: 0.8rem;
     padding-top: 30%;
     padding-bottom: 30%;
 }
 
     .vertical-crd-button i {
-        font-size: 1rem;
+        font-size: 1.4rem;
     }
 
     .vertical-crd-button:hover, .vertical-crd-button:focus {
         background-color: #009530;
         color: #f6fafb;
     }
+
 
 /* Navbar styles
 -------------------------------------------------- */
