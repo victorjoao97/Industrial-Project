@@ -1,16 +1,11 @@
-﻿@{
-    int selectedResource = (int)ViewData["SelectedResource"];
-    Bgroups selectedBGroup = (Bgroups)ViewData["SelectedBGroup"];
-}
-
-<button type="button" class="btn vertical-crd-button" data-toggle="modal" data-target="#deleteBGroupModal" disabled="@((selectedResource > 0 && selectedBGroup != null) ? null : "disabled")">
-    <i class="far fa-trash-alt"></i><br>Delete
+﻿<button type="button" id="btnDeleteBGroupModal" class="btn vertical-crd-button" data-toggle="modal" data-target="#deleteBGroupModal" disabled>
+    <i class="fas fa-trash-alt"></i>
 </button>
 
-@if (selectedBGroup != null)
-{
-    <!-- Modal Window-->
-    <div class="modal fade" id="deleteBGroupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+<!-- Modal Window-->
+<div class="modal fade" id="deleteBGroupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <form id="deleteBGroupForm">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -20,17 +15,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Do you really want to delete <b>"@selectedBGroup.BgroupName"</b> BGroup? <br>
-                    @(selectedBGroup.InverseBgroupIdparentNavigation.Count != 0 ? "This BGroup has children, they will be deleted also.": null)
+                    <p>Do you really want to delete <b id="deleteBGroupName"></b></p>
+                    <span id="deleteBGroupChildren"> This BGroup has children, they will be deleted also </span>
                 </div>
                 <div class="modal-footer text-center">
-                    <form asp-controller="Main" asp-action="DeleteBGroup" method="post">
-                        <input name="deletedBGroup" type="hidden" value="@selectedBGroup.BgroupId">
-                        <button type="button" class="btn modal-button-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn modal-button-primary">Delete</button>
-                    </form>
+                    <input name="deletedBGroup" id="deleteBGroupId" type="hidden">
+                    <button type="button" class="btn modal-button-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="deleteBGroupSubmit" type="submit" class="btn modal-button-primary">Delete</button>
                 </div>
             </div>
         </div>
-    </div>
-}
+    </form>
+</div>
+

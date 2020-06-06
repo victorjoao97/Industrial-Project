@@ -4,9 +4,8 @@ using EnergyAndMaterialBalanceModule.Models;
 
 namespace EnergyAndMaterialBalanceModule.Data.Repositories
 {
-    public interface IResourcesRepository: IBaseRepository<Resources>
+    public interface IPointsRepository : IBaseRepository<Points>
     {
-        Task<IEnumerable<Resources>> GetAllResources();
-        Task<Resources> GetById(short id);
+        Task<IEnumerable<Points>> GetAlPonts(int bgroupId);
     }
 }
