@@ -22,7 +22,7 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         private readonly IPointsRepository _pointsRepository;
 =======
         private readonly IBGroupsRepository _bGroupsRepository;
->>>>>>> ba5b85b... Method is created
+>>>>>>> 12933c6a83883a77d68e9fe592ddfaeb48ce13c5
 
         private ResultDto _result = new ResultDto();
 
@@ -73,6 +73,7 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             return new JsonResult(_result);
         }
 
+<<<<<<< HEAD
         [HttpPost]
         [Route("deleteBGroup")]
         public async Task<IActionResult> DeleteBGroup(int bgroupId)
@@ -129,9 +130,23 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBGroupsPoints(int resourceId, int bgroupId)
         {
+            var bGroup = await _bgroupsRepository.GetById(bgroupId);
+
+            _result.error = false;
+            _result.message = "Success";
+            _result.SelectedBGroup = bGroup;
+            _result.Points = bGroup.Points;
+            return new JsonResult(_result);
+=======
+        [HttpGet]
+        public async Task<IActionResult> GetBGroupsPoints(int resourceId, int bgroupId)
+        {
             var bGroup = await _bGroupsRepository.GetById(bgroupId);
             ViewData["Points"] = bGroup.Points;
+            ViewData["SelectedResource"] = resourceId;
+            ViewData["SelectedBGroup"] = bgroupId;
             return View();
+>>>>>>> 12933c6a83883a77d68e9fe592ddfaeb48ce13c5
         }
 
 
