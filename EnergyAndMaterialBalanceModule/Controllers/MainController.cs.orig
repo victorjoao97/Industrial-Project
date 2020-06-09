@@ -17,8 +17,12 @@ namespace EnergyAndMaterialBalanceModule.Controllers
     {
         private readonly ILogger<MainController> _logger;
         private readonly IResourcesRepository _resourceRepository;
+<<<<<<< HEAD
         private readonly IBGroupsRepository _bgroupsRepository;
         private readonly IPointsRepository _pointsRepository;
+=======
+        private readonly IBGroupsRepository _bGroupsRepository;
+>>>>>>> ba5b85b... Method is created
 
         private ResultDto _result = new ResultDto();
 
@@ -125,13 +129,9 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBGroupsPoints(int resourceId, int bgroupId)
         {
-            var bGroup = await _bgroupsRepository.GetById(bgroupId);
-
-            _result.error = false;
-            _result.message = "Success";
-            _result.SelectedBGroup = bGroup;
-            _result.Points = bGroup.Points;
-            return new JsonResult(_result);
+            var bGroup = await _bGroupsRepository.GetById(bgroupId);
+            ViewData["Points"] = bGroup.Points;
+            return View();
         }
 
 
