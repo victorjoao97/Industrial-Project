@@ -15,23 +15,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="bgroupName">BGroup Name</label>
-                        <input type="text" class="form-control border-radius-zero" id="createBGgroupName" placeholder="BGroup Name" name="bgroupName" required data-error='BGroup Name is required'>
-                        <div class="help-block with-errors"></div>
+                    <div class="alert alert-warning" id="createMessage" role="alert">
+
                     </div>
                     <div class="form-group">
-                        <label for="validDisbalance">Valid Disbalance</label>
-                        <input type="text" class="form-control border-radius-zero" id="createValidDisbalance" placeholder="Valid Disbalance" name="validDisbalance" required data-error='Valid Disbalance is required'>
-                        <div class="help-block with-errors"></div>
+                        <label for="createBGgroupName">BGroup Name</label>
+                        <input type="text" class="form-control border-radius-zero" id="createBGroupName" placeholder="BGroup Name" name="createBGroupName">
                     </div>
                     <div class="form-group">
+                        <label for="createValidDisbalance">Valid Disbalance</label>
+                        <input type="number" class="form-control border-radius-zero" id="createValidDisbalance" placeholder="Valid Disbalance" name="createValidDisbalance">
+                    </div>
+                    <div class="form-group" id="level">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" required name="createBGroupIdParent" id="sameLevel" value="">
+                            <input class="form-check-input" type="radio" name="createBGroupIdParent" id="sameLevel" value="">
                             <label class="form-check-label" for="sameLevel">Same level</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" required name="createBGroupIdParent" id="asChild" value="">
+                            <input class="form-check-input" type="radio" name="createBGroupIdParent" id="asChild" value="">
                             <label class="form-check-label" for="asChild">As child</label>
                         </div>
                     </div>

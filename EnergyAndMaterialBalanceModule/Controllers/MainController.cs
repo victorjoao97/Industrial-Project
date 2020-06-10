@@ -82,21 +82,11 @@ namespace EnergyAndMaterialBalanceModule.Controllers
 
         [HttpPost]
         [Route("createBGroup")]
-        public async Task<IActionResult> CreateBgroups(CreateBgroupsFm model)
+        public async Task<IActionResult> CreateBgroups([FromBody] Bgroups model)
         {
-            Bgroups newBgroups = new Bgroups();
-            newBgroups.BgroupName = model.bgroupName;
-            newBgroups.ValidDisbalance = model.validDisbalance;
-            newBgroups.ResourceId = (short)model.resourceId;
+            await _bgroupsRepository.Create(model);
+            _result.SelectedBGroup = model;
 
-            if (model.bGroupIdParent != null)
-            {
-                newBgroups.BgroupIdparent = model.bGroupIdParent;
-            }
-
-            await _bgroupsRepository.Create(newBgroups);
-            _result.error = false;
-            _result.message = "Success";
             return new JsonResult(_result);
         }
 
