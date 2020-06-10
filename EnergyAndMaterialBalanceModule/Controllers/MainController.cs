@@ -92,16 +92,14 @@ namespace EnergyAndMaterialBalanceModule.Controllers
 
         [HttpPost]
         [Route("updateBGroup")]
-        public async Task<IActionResult> UpdateBgroups(UpdateBgroupsFm model)
+        public async Task<IActionResult> UpdateBgroups([FromBody] Bgroups model)
         {
-            Bgroups bgroups = await _bgroupsRepository.GetById(model.bgroupId);
-            bgroups.BgroupName = model.bgroupName;
-            bgroups.ValidDisbalance = model.validDisbalance;
-
+            Bgroups bgroups = await _bgroupsRepository.GetById(model.BgroupId);
+            bgroups.BgroupName = model.BgroupName;
+            bgroups.ValidDisbalance = model.ValidDisbalance;
             await _bgroupsRepository.Update(bgroups);
-            _result.error = false;
-            _result.message = "Success";
             _result.SelectedBGroup = bgroups;
+
             return new JsonResult(_result);
         }
 

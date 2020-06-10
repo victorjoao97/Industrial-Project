@@ -6,6 +6,7 @@
 
 var tree = "";
 var createBGroupFormValidator;
+var updateBGroupFormValidator;
 
 var data = {
     selectedResource: null,
@@ -112,6 +113,33 @@ async function CreateBGroup() {
     }
 }
 
+// updating selected BGroup
+
+async function UpdateBGroup() {
+    bgroupNameVal = $("#updateBGroupName").val();
+    validDisbalanceVal = $("#updateValidDisbalance").val();
+    bgroupIdVal = $("#updateBGroupId").val();
+
+    const response = await fetch("/main/UpdateBGroup", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            bgroupId: bgroupIdVal,
+            bgroupName: bgroupNameVal,
+            validDisbalance: validDisbalanceVal
+        })
+    });
+
+    if (response.ok === true) {
+        clearModalMessage('#updateMessage');
+        const result = await response.json();
+        $('#updateBGroupModal').modal('hide');
+        updateNode(result.selectedBGroup);
+        showMessage(false, "Балансовая группа '" + result.selectedBGroup.bgroupName + "' была успешно обновлена!");
+    }
+    else {
+        fillModalMessage('#updateMessage', "Не удалось изменить балансовую группу!");
+    }
 }
 
 // function for setting selected Resource
@@ -133,6 +161,17 @@ function addNode(createdBGroup) {
     tree.unselectAll();
     tree.select(node);
 }
+
+// updating BGroup node
+
+function updateNode(updateBGroup) {
+    tree.updateNode(updateBGroup.bgroupId, updateBGroup);
+    var node = tree.getNodeById(updateBGroup.bgroupId);
+    tree.unselectAll();
+    tree.select(node);
+}
+
+// setting selected Resource
 
 function fillSelect(selectedResource) {
     selectElement('resources', selectedResource.resourceId);
@@ -298,7 +337,12 @@ function showCreateBGroupModal() {
     }
 }
 
+// setting BGroup form
+
 function showUpdateBGroupModal() {
+    clearModalMessage('#updateMessage');
+    updateBGroupFormValidator.resetForm();
+
     $('#updateBGroupId').val(data.selectedBGroup.bgroupId);
     $('#updateBGroupName').val(data.selectedBGroup.bgroupName);
     $('#updateValidDisbalance').val(data.selectedBGroup.validDisbalance);
@@ -328,31 +372,8 @@ function showMessage(error, message) {
 
 }
 
-// update selected BGroup
-//todo: add validation, show error messages from the server in modal window, select updated BGroup,
-//show it in the tree view
 // setting error message (Modal window)
 
-async function UpdateBGroup() {
-    bGroupNameVal = $("#updateBGroupName").val();
-    validDisbalanceVal = $("#updateValidDisbalance").val();
-    bgroupsIdVal = $("#updateBGroupId").val();
-
-    console.log(bgroupsIdVal);
-    $.post("/main/UpdateBGroup/", {
-        bgroupId: bgroupsIdVal,
-        bgroupName: bGroupNameVal,
-        validDisbalance: validDisbalanceVal
-    }).done(function (result) {
-        console.log(result);
-        $('#updateBGroupModal').modal('hide');
-        GetBGroups(result.selectedBGroup.resourceId);
-        clearTableView();
-        clearValidDisbalance();
-        showMessage(result.error, result.message);
-    }).fail(function (result) {
-        console.log("error!")
-    });
 function fillModalMessage(element, message) {
     $(element).show();
     $(element).text(message);
@@ -429,9 +450,10 @@ $(document).ready(function () {
     });
 
     $('#updateBGroupForm').on('submit', function (e) {
-        console.log("Submit Update");
-        e.preventDefault();
-        UpdateBGroup();
+        if ($("#updateBGroupForm").valid()) {
+            e.preventDefault();
+            UpdateBGroup();
+        }
     });
 
     $('#deleteBGroupForm').on('submit', function (e) {
@@ -439,7 +461,29 @@ $(document).ready(function () {
         DeleteBGroup();
     });
 
-    
+    updateBGroupFormValidator = $("#updateBGroupForm").validate({
+        rules: {
+            updateBGroupName: {
+                required: true,
+                maxlength: 255
+            },
+            updateValidDisbalance: {
+                required: true,
+                number: true
+            },
+        },
+        messages: {
+            updateBGroupName: {
+                required: "Укажите имя балансовой группы, это поле не может быть пустым!",
+                maxlength: "Название группы должно содержать меньше 255 символов!"
+            },
+            updateValidDisbalance: {
+                required: "Укажите допустимый дисбаланс, это поле не может быть пустым!",
+                number: "Укажите допустимый дисбаланс в правильном формате!",
+            },
+        }
+
+    });
 
     
     createBGroupFormValidator = $("#createBGroupForm").validate({
