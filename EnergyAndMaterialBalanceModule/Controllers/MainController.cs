@@ -37,6 +37,7 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         {
             IEnumerable<Resources> resources = await _resourceRepository.GetAllResources();
             ViewData["Resources"] = resources;
+
             return View();
         }
 
@@ -50,9 +51,8 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             {
                 await _bgroupsRepository.GetAllChildren(group.BgroupId);
             }
-            _result.error = false;
-            _result.message = "Success";
             _result.Bgroups = rootBGroups;
+
             return new JsonResult(_result);
         }
 
@@ -60,12 +60,9 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         public async Task<IActionResult> GetPoints(int bgroupId)
         {
             var selectedBGroup = await _bgroupsRepository.GetById(bgroupId);
-            var selectedResource = selectedBGroup.Resource;
-            _result.SelectedResource = selectedResource;
             _result.SelectedBGroup = selectedBGroup;
             _result.Points = await _pointsRepository.GetAlPonts(selectedBGroup.BgroupId);
-            _result.error = false;
-            _result.message = "Success";
+
             return new JsonResult(_result);
         }
 

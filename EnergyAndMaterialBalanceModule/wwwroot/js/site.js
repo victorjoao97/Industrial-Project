@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 
-var tree = "";
+var tree;
 var createBGroupFormValidator;
 var updateBGroupFormValidator;
 
@@ -21,17 +21,18 @@ var data = {
     parameters: null
 };
 
-// getting all bgroups by selected Resource
-//todo: add messages for error
+// getting all BGroups by selected Resource
 
 async function GetBGroups(resourceId) {
     const response = await fetch("main/getBGroups/" + resourceId, {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
+
     if (response.ok === true) {
         const result = await response.json();
         console.log(result);
+
         fillSelect(result.selectedResource);
         fillTreeView(result.bgroups);
         buttonDisabled('#btnCreateBGroupModal', false);
@@ -39,26 +40,34 @@ async function GetBGroups(resourceId) {
         buttonDisabled('#btnUpdateBGroupModal', true);
     }
     else {
-        console.log("Cannot get BGroups for selected Resource!");
+        var resource = $('#resources option:selected').text();
+        showMessage(true, "Не удалось получить список балансовых групп для ресурса '" + resource + "'!");
+        selectElement('resources', '');
     }
 }
 
-// getting all points by selected BGroup
-//todo: add messages for error
+// getting all Points by selected BGroup
 
 async function GetPoints(bgroupId) {
     const response = await fetch("main/getPoints/" + bgroupId, {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
+
     if (response.ok === true) {
         const result = await response.json();
         clearTableView();
         fillTableView(result.points);
         fillValidDisbalance(result.selectedBGroup);
+        buttonDisabled('#btnDeleteBGroupModal', false);
+        buttonDisabled('#btnUpdateBGroupModal', false);
     }
     else {
-        console.log("Cannot get Points for selected BGroup!");
+        var selections = tree.getSelections();
+        var node = tree.getNodeById(selections[0]);
+        var bgroup = node.find('span')[2].innerText;
+        showMessage(true, "Не удалось получить список точек учета и допустимый дисбаланс для группы '" + bgroup + "'!");
+        tree.unselectAll();
     }
 }
 
@@ -142,7 +151,6 @@ async function UpdateBGroup() {
     }
 }
 
-// function for setting selected Resource
 // removing deleted BGroup node 
 
 function removeNode(deletedBGroup) {
@@ -189,9 +197,6 @@ function fillTreeView(bgroups) {
         childrenField: "inverseBgroupIdparentNavigation",
         select: function (e, node, id) {
             GetPoints(id);
-            buttonDisabled('#btnDeleteBGroupModal', false);
-            buttonDisabled('#btnUpdateBGroupModal', false);
-
         },
         unselect: function (e, node, id) {
             clearTableView();
@@ -229,7 +234,7 @@ function fillTableView(points) {
     });
 }
 
-// deleting table view component 
+// removing table view component 
 
 function clearTableView() {
     data.points = null;
@@ -237,14 +242,14 @@ function clearTableView() {
 
 }
 
-// deleting valid disbalance 
+// removing valid disbalance
 
 function clearValidDisbalance() {
     data.selectedBGroup = null;
     $('#validDisbalance').text("");
 }
 
-// deleting tree view component 
+// removing tree view component
 
 function clearTreeView() {
     data.bgroups = null;
@@ -408,6 +413,9 @@ $.validator.setDefaults({
 
 
 $(document).ready(function () {
+
+    // setting selected Point
+
     $('#tableView').delegate('tr', 'click', function () {
         var selected = $(this).hasClass('highlight');
 
@@ -415,6 +423,8 @@ $(document).ready(function () {
         if (!selected)
             $(this).addClass('highlight');
     });
+
+    // setting selected Resource
 
     $('#resources').change(function () {
         if ($(this).val() === '') {
