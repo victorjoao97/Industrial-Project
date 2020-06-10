@@ -123,7 +123,8 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBGroupsPoints(int resourceId, int bgroupId)
+        [Route("getPoints/{bgroupId}")]
+        public async Task<IActionResult> GetBGroupsPoints(int bgroupId)
         {
             var bGroup = await _bgroupsRepository.GetById(bgroupId);
 
