@@ -82,7 +82,7 @@ async function DeleteBGroup() {
     if (response.ok === true) {
         const result = await response.json();
         showMessage(false, "Балансовая группа '" + result.selectedBGroup.bgroupName + "' была успешно удалена!");
-        removeNode(result.seletedBGroup);
+        removeNode(result.selectedBGroup);
         buttonDisabled('#btnCreateBGroupModal', false);
         buttonDisabled('#btnDeleteBGroupModal', true);
         buttonDisabled('#btnUpdateBGroupModal', true);
