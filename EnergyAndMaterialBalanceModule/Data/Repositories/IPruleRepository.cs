@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EnergyAndMaterialBalanceModule.Data.Repositories
 {
-    interface IPruleRepository
+    interface IPruleRepository : IBaseRepository<Prule>
     {
         Task<IEnumerable<Prule>> GetAllRules();
     }
