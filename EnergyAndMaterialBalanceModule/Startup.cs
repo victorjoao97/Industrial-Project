@@ -97,9 +97,7 @@ namespace EnergyAndMaterialBalanceModule
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Main}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }

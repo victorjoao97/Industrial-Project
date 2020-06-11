@@ -4,11 +4,11 @@
 // Write your JavaScript code.
 
 
-var tree = "";
+var tree;
+var createBGroupFormValidator;
+var updateBGroupFormValidator;
 
 var data = {
-    error: null,
-    message: null,
     selectedResource: null,
     bgroups: null,
     selectedBGroup: null,
@@ -21,17 +21,18 @@ var data = {
     parameters: null
 };
 
-// getting all bgroups by selected Resource
-//todo: add messages for error
+// getting all BGroups by selected Resource
 
 async function GetBGroups(resourceId) {
     const response = await fetch("main/getBGroups/" + resourceId, {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
+
     if (response.ok === true) {
         const result = await response.json();
         console.log(result);
+
         fillSelect(result.selectedResource);
         fillTreeView(result.bgroups);
         buttonDisabled('#btnCreateBGroupModal', false);
@@ -39,49 +40,146 @@ async function GetBGroups(resourceId) {
         buttonDisabled('#btnUpdateBGroupModal', true);
     }
     else {
-        console.log("Cannot get BGroups for selected Resource!");
+        var resource = $('#resources option:selected').text();
+        showMessage(true, "Не удалось получить список балансовых групп для ресурса '" + resource + "'!");
+        selectElement('resources', '');
     }
 }
 
-// getting all points by selected BGroup
-//todo: add messages for error
+// getting all Points by selected BGroup
 
 async function GetPoints(bgroupId) {
     const response = await fetch("main/getPoints/" + bgroupId, {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
+
     if (response.ok === true) {
         const result = await response.json();
         clearTableView();
         fillTableView(result.points);
         fillValidDisbalance(result.selectedBGroup);
+        buttonDisabled('#btnDeleteBGroupModal', false);
+        buttonDisabled('#btnUpdateBGroupModal', false);
     }
     else {
-        console.log("Cannot get Points for selected BGroup!");
+        var selections = tree.getSelections();
+        var node = tree.getNodeById(selections[0]);
+        var bgroup = node.find('span')[2].innerText;
+        showMessage(true, "Не удалось получить список точек учета и допустимый дисбаланс для группы '" + bgroup + "'!");
+        tree.unselectAll();
     }
 }
 
-// delete selected BGroup
-//todo: implement and add messages for error and success
+// deleting selected BGroup
 
 async function DeleteBGroup() {
-    bgroupsIdVal = $("#deleteBGroupId").val();
-    console.log(bgroupsIdVal);
-    $.post("/main/deleteBGroup/", {
-        bgroupId: bgroupsIdVal,
-    }).done(function (result) {
-        $('#deleteBGroupModal').modal('hide');
-        GetBGroups(data.selectedResource.resourceId);
-        clearTableView();
-        clearValidDisbalance();
-        showMessage(result.error, result.message);
-    }).fail(function (result) {
-        console.log("error!")
+    bgroupId = $("#deleteBGroupId").val();
+    const response = await fetch("/main/deleteBGroup/" + bgroupId, {
+        method: "DELETE",
+        headers: { "Accept": "application/json" }
     });
+    if (response.ok === true) {
+        const result = await response.json();
+        showMessage(false, "Балансовая группа '" + result.selectedBGroup.bgroupName + "' была успешно удалена!");
+        removeNode(result.seletedBGroup);
+        buttonDisabled('#btnCreateBGroupModal', false);
+        buttonDisabled('#btnDeleteBGroupModal', true);
+        buttonDisabled('#btnUpdateBGroupModal', true);
+    }
+    else {
+        showMessage(true, "Не удалось удалить балансовую группу '" + data.selectedBGroup.bgroupName + "'!");
+    }
+    $('#deleteBGroupModal').modal('hide');
 }
 
-// function for setting selected Resource
+// creating new BGroup
+
+async function CreateBGroup() {
+    bgroupNameVal = $("#createBGroupName").val();
+    validDisbalanceVal = $("#createValidDisbalance").val();
+    resourceIdVal = $("#createResourceId").val();
+    bgroupIdParentVal = $('input:radio[name="createBGroupIdParent"]:checked').val();
+    const response = await fetch("/main/CreateBGroup", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            bgroupName: bgroupNameVal,
+            validDisbalance: validDisbalanceVal,
+            resourceId: parseInt(resourceIdVal),
+            bgroupIdparent: bgroupIdParentVal
+        })
+    });
+    if (response.ok === true) {
+        clearModalMessage('#createMessage');
+        const result = await response.json();
+        $('#createBGroupModal').modal('hide');
+        addNode(result.selectedBGroup);
+        showMessage(false, "Балансовая группа '" + result.selectedBGroup.bgroupName + "' была успешно добавлена!");
+    }
+    else {
+        fillModalMessage('#createMessage', "Не удалось создать балансовую группу!");
+    }
+}
+
+// updating selected BGroup
+
+async function UpdateBGroup() {
+    bgroupNameVal = $("#updateBGroupName").val();
+    validDisbalanceVal = $("#updateValidDisbalance").val();
+    bgroupIdVal = $("#updateBGroupId").val();
+
+    const response = await fetch("/main/UpdateBGroup", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            bgroupId: bgroupIdVal,
+            bgroupName: bgroupNameVal,
+            validDisbalance: validDisbalanceVal
+        })
+    });
+
+    if (response.ok === true) {
+        clearModalMessage('#updateMessage');
+        const result = await response.json();
+        $('#updateBGroupModal').modal('hide');
+        updateNode(result.selectedBGroup);
+        showMessage(false, "Балансовая группа '" + result.selectedBGroup.bgroupName + "' была успешно обновлена!");
+    }
+    else {
+        fillModalMessage('#updateMessage', "Не удалось изменить балансовую группу!");
+    }
+}
+
+// removing deleted BGroup node 
+
+function removeNode(deletedBGroup) {
+    var node = tree.getNodeById(deletedBGroup.bgroupId);
+    tree.unselect(node);
+    tree.removeNode(node);
+}
+
+// adding new created BGroup node
+
+function addNode(createdBGroup) {
+    var parent = tree.getNodeById(createdBGroup.bgroupIdparent);
+    tree.off('dataBound');
+    tree.addNode(createdBGroup, parent);
+    var node = tree.getNodeById(createdBGroup.bgroupId);
+    tree.unselectAll();
+    tree.select(node);
+}
+
+// updating BGroup node
+
+function updateNode(updateBGroup) {
+    tree.updateNode(updateBGroup.bgroupId, updateBGroup);
+    var node = tree.getNodeById(updateBGroup.bgroupId);
+    tree.unselectAll();
+    tree.select(node);
+}
+
+// setting selected Resource
 
 function fillSelect(selectedResource) {
     selectElement('resources', selectedResource.resourceId);
@@ -99,9 +197,6 @@ function fillTreeView(bgroups) {
         childrenField: "inverseBgroupIdparentNavigation",
         select: function (e, node, id) {
             GetPoints(id);
-            buttonDisabled('#btnDeleteBGroupModal', false);
-            buttonDisabled('#btnUpdateBGroupModal', false);
-
         },
         unselect: function (e, node, id) {
             clearTableView();
@@ -139,7 +234,7 @@ function fillTableView(points) {
     });
 }
 
-// deleting table view component 
+// removing table view component 
 
 function clearTableView() {
     data.points = null;
@@ -147,14 +242,14 @@ function clearTableView() {
 
 }
 
-// deleting valid disbalance 
+// removing valid disbalance
 
 function clearValidDisbalance() {
     data.selectedBGroup = null;
     $('#validDisbalance').text("");
 }
 
-// deleting tree view component 
+// removing tree view component
 
 function clearTreeView() {
     data.bgroups = null;
@@ -222,9 +317,12 @@ function buttonDisabled(button, state) {
 //setting create BGroup form
 
 function showCreateBGroupModal() {
-    $("#createBGgroupName").val("");
+    clearModalMessage('#createMessage');
+    createBGroupFormValidator.resetForm();
+
+    $("#createBGroupName").val("");
     $("#createValidDisbalance").val("");
-    $('#createResourceId').val(data.selectedResource.resourceId);  
+    $('#createResourceId').val(data.selectedResource.resourceId);
 
     if (data.selectedBGroup != null) {
         $('#asChild').val(data.selectedBGroup.bgroupId);
@@ -244,23 +342,18 @@ function showCreateBGroupModal() {
     }
 }
 
+// setting BGroup form
+
 function showUpdateBGroupModal() {
+    clearModalMessage('#updateMessage');
+    updateBGroupFormValidator.resetForm();
+
     $('#updateBGroupId').val(data.selectedBGroup.bgroupId);
     $('#updateBGroupName').val(data.selectedBGroup.bgroupName);
     $('#updateValidDisbalance').val(data.selectedBGroup.validDisbalance);
 }
 
-function showMessage(error, message) {
-    if (!error) 
-        $("#message").addClass('alert-success');
-    else
-        $("#message").addClass('alert-warning');
-    $("#message").text(message);
-    $("#message").show().delay(5000).fadeOut();
-
-}
-
-//setting delete BGroup form
+// setting delete BGroup form
 
 function showDeleteBGroupModal() {
     var selectedBGroup = data.selectedBGroup;
@@ -272,61 +365,57 @@ function showDeleteBGroupModal() {
     $('#deleteBGroupId').val(selectedBGroup.bgroupId);
 }
 
+// setting success or error message (Index view)
 
-// create new BGroup
-//todo: add validation, show error messages from the server in modal window, select new BGroup,
-//show it in the tree view
+function showMessage(error, message) {
+    if (!error)
+        $("#message").addClass('alert-success');
+    else
+        $("#message").addClass('alert-warning');
+    $("#message").text(message);
+    $("#message").show().delay(8000).fadeOut();
 
-async function CreateBGroup() {
-    bGroupNameVal = $("#createBGgroupName").val();
-    validDisbalanceVal = $("#createValidDisbalance").val();
-    resourceIdVal = $("#createResourceId").val();
-    bGroupIdParentVal = $('input:radio[name="createBGroupIdParent"]:checked').val();
-    console.log(bGroupIdParentVal);
-    $.post("/main/CreateBGroup/", {
-        bgroupName: bGroupNameVal,
-        validDisbalance: validDisbalanceVal,
-        resourceId: resourceIdVal,
-        bGroupIdParent: bGroupIdParentVal
-    }).done(function (result) {
-        console.log(result);
-        $('#createBGroupModal').modal('hide');
-        GetBGroups(resourceIdVal);
-        clearTableView();
-        clearValidDisbalance();
-        showMessage(result.error, result.message);
-    }).fail(function (result) {
-        console.log("error!")
-    });
 }
 
-// update selected BGroup
-//todo: add validation, show error messages from the server in modal window, select updated BGroup,
-//show it in the tree view
+// setting error message (Modal window)
 
-async function UpdateBGroup() {
-    bGroupNameVal = $("#updateBGroupName").val();
-    validDisbalanceVal = $("#updateValidDisbalance").val();
-    bgroupsIdVal = $("#updateBGroupId").val();
-
-    console.log(bgroupsIdVal);
-    $.post("/main/UpdateBGroup/", {
-        bgroupId: bgroupsIdVal,
-        bgroupName: bGroupNameVal,
-        validDisbalance: validDisbalanceVal
-    }).done(function (result) {
-        console.log(result);
-        $('#updateBGroupModal').modal('hide');
-        GetBGroups(result.selectedBGroup.resourceId);
-        clearTableView();
-        clearValidDisbalance();
-        showMessage(result.error, result.message);
-    }).fail(function (result) {
-        console.log("error!")
-    });
+function fillModalMessage(element, message) {
+    $(element).show();
+    $(element).text(message);
 }
+
+// removing error message (Modal window)
+
+function clearModalMessage(element) {
+    $(element).text("");
+    $(element).hide();
+}
+
+// setting jQuery validation
+
+$.validator.setDefaults({
+    errorElement: 'span',
+    errorClass: 'invalid-feedback',
+    highlight: function (element, errorClass) {
+        $(element).addClass(this.settings.errorElementClass).removeClass(errorClass);
+    },
+    unhighlight: function (element, errorClass) {
+        $(element).removeClass(this.settings.errorElementClass).removeClass(errorClass);
+    },
+    errorPlacement: function (error, element) {
+        if (element.attr("name") == "createBGroupIdParent") {
+            error.insertAfter("#level");
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
 
 $(document).ready(function () {
+
+    // setting selected Point
+
     $('#tableView').delegate('tr', 'click', function () {
         var selected = $(this).hasClass('highlight');
 
@@ -334,6 +423,8 @@ $(document).ready(function () {
         if (!selected)
             $(this).addClass('highlight');
     });
+
+    // setting selected Resource
 
     $('#resources').change(function () {
         if ($(this).val() === '') {
@@ -362,25 +453,77 @@ $(document).ready(function () {
     });
 
     $('#createBGroupForm').on('submit', function (e) {
-        console.log("SUBMIT");
-        e.preventDefault();
-        CreateBGroup();
+        if ($("#createBGroupForm").valid()) {
+            e.preventDefault();
+            CreateBGroup();
+        }
     });
 
     $('#updateBGroupForm').on('submit', function (e) {
-        console.log("Submit Update");
-        e.preventDefault();
-        UpdateBGroup();
+        if ($("#updateBGroupForm").valid()) {
+            e.preventDefault();
+            UpdateBGroup();
+        }
     });
 
     $('#deleteBGroupForm').on('submit', function (e) {
-        console.log("SUBMIT");
         e.preventDefault();
         DeleteBGroup();
     });
 
-    
+    updateBGroupFormValidator = $("#updateBGroupForm").validate({
+        rules: {
+            updateBGroupName: {
+                required: true,
+                maxlength: 255
+            },
+            updateValidDisbalance: {
+                required: true,
+                number: true
+            },
+        },
+        messages: {
+            updateBGroupName: {
+                required: "Укажите имя балансовой группы, это поле не может быть пустым!",
+                maxlength: "Название группы должно содержать меньше 255 символов!"
+            },
+            updateValidDisbalance: {
+                required: "Укажите допустимый дисбаланс, это поле не может быть пустым!",
+                number: "Укажите допустимый дисбаланс в правильном формате!",
+            },
+        }
 
+    });
+
+    
+    createBGroupFormValidator = $("#createBGroupForm").validate({
+        rules: {
+            createBGroupName: {
+                required: true,
+                maxlength: 255
+            },
+            createValidDisbalance: {
+                required: true,
+                number: true
+            },
+            createBGroupIdParent: {
+                required: true,
+            }
+        },
+        messages: {
+            createBGroupName: {
+                required: "Укажите имя балансовой группы, это поле не может быть пустым!",
+                maxlength: "Название группы должно содержать меньше 255 символов!"
+            },
+            createValidDisbalance: {
+                required: "Укажите допустимый дисбаланс, это поле не может быть пустым!",
+                number: "Укажите допустимый дисбаланс в правильном формате!",
+            },
+            createBGroupIdParent: {
+                required: "Укажите уровень, это поле не может быть пустым!",
+            }
+        },
+    });
 });
 
 

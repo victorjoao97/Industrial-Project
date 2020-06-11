@@ -3,7 +3,7 @@
 }
 
 <div class="alert" id="message" role="alert">
-    
+
 </div>
 
 <div class="main-module">
@@ -61,13 +61,13 @@
                 <div class="col-lg-1 col-md-2 col-sm-3 pl-none">
                     <div class="border mt-2 text-center vertical-crd">
                         <button type="button" class="btn vertical-crd-button">
-                            <i class="far fa-edit"></i><br>Edit
+                            <i class="fas fa-plus"></i>
                         </button>
                         <button type="button" class="btn vertical-crd-button">
-                            <i class="far fa-plus-square"></i><br>Add
+                            <i class="fas fa-pencil-alt"></i>
                         </button>
                         <button type="button" class="btn vertical-crd-button">
-                            <i class="far fa-trash-alt"></i><br>Delete
+                            <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
                 </div>
@@ -89,3 +89,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+   <partial name="_ValidationScriptsPartial" />
+}

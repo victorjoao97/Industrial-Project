@@ -10,9 +10,6 @@ namespace EnergyAndMaterialBalanceModule.Models
            
         }
 
-        public Boolean error { get; set; }
-        public String message { get; set; }
-
         public IEnumerable<Resources> Resources { get; set; }
         public Resources SelectedResource { get; set; }
         public IEnumerable<Bgroups> Bgroups { get; set; }

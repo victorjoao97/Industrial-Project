@@ -37,6 +37,7 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         {
             IEnumerable<Resources> resources = await _resourceRepository.GetAllResources();
             ViewData["Resources"] = resources;
+
             return View();
         }
 
@@ -50,9 +51,8 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             {
                 await _bgroupsRepository.GetAllChildren(group.BgroupId);
             }
-            _result.error = false;
-            _result.message = "Success";
             _result.Bgroups = rootBGroups;
+
             return new JsonResult(_result);
         }
 
@@ -60,65 +60,43 @@ namespace EnergyAndMaterialBalanceModule.Controllers
         public async Task<IActionResult> GetPoints(int bgroupId)
         {
             var selectedBGroup = await _bgroupsRepository.GetById(bgroupId);
-            var selectedResource = selectedBGroup.Resource;
-            _result.SelectedResource = selectedResource;
             _result.SelectedBGroup = selectedBGroup;
             _result.Points = await _pointsRepository.GetAlPonts(selectedBGroup.BgroupId);
-            _result.error = false;
-            _result.message = "Success";
+
             return new JsonResult(_result);
         }
 
-        [HttpPost]
-        [Route("deleteBGroup")]
+        [HttpDelete]
+        [Route("deleteBGroup/{bgroupId}")]
         public async Task<IActionResult> DeleteBGroup(int bgroupId)
         {
-            try
-            {
-               await _bgroupsRepository.DeleteWithDependent(bgroupId);
-            }
-            catch (Exception ex)
-            {
-                _result.error = true;
-                _result.message = "Error";
-            }
-            _result.error = false;
-            _result.message = "Success";
+            var selectedBGroup = await _bgroupsRepository.GetById(bgroupId);
+            _result.SelectedBGroup = selectedBGroup;
+            await _bgroupsRepository.DeleteWithDependent(bgroupId);
+
             return new JsonResult(_result);
         }
 
         [HttpPost]
         [Route("createBGroup")]
-        public async Task<IActionResult> CreateBgroups(CreateBgroupsFm model)
+        public async Task<IActionResult> CreateBgroups([FromBody] Bgroups model)
         {
-            Bgroups newBgroups = new Bgroups();
-            newBgroups.BgroupName = model.bgroupName;
-            newBgroups.ValidDisbalance = model.validDisbalance;
-            newBgroups.ResourceId = (short)model.resourceId;
+            await _bgroupsRepository.Create(model);
+            _result.SelectedBGroup = model;
 
-            if (model.bGroupIdParent != null)
-            {
-                newBgroups.BgroupIdparent = model.bGroupIdParent;
-            }
-
-            await _bgroupsRepository.Create(newBgroups);
-            _result.error = false;
-            _result.message = "Success";
             return new JsonResult(_result);
         }
 
         [HttpPost]
         [Route("updateBGroup")]
-        public async Task<IActionResult> UpdateBgroups(UpdateBgroupsFm model)
+        public async Task<IActionResult> UpdateBgroups([FromBody] Bgroups model)
         {
-            Bgroups bgroups = await _bgroupsRepository.GetById(model.bgroupId);
-            bgroups.BgroupName = model.bgroupName;
-            bgroups.ValidDisbalance = model.validDisbalance;
-
+            Bgroups bgroups = await _bgroupsRepository.GetById(model.BgroupId);
+            bgroups.BgroupName = model.BgroupName;
+            bgroups.ValidDisbalance = model.ValidDisbalance;
             await _bgroupsRepository.Update(bgroups);
-            _result.error = false;
-            _result.message = "Success";
             _result.SelectedBGroup = bgroups;
+
             return new JsonResult(_result);
         }
 
