@@ -100,19 +100,6 @@ namespace EnergyAndMaterialBalanceModule.Controllers
             return new JsonResult(_result);
         }
 
-        [HttpGet]
-        [Route("getPoints/{bgroupId}")]
-        public async Task<IActionResult> GetBGroupsPoints(int bgroupId)
-        {
-            var bGroup = await _bgroupsRepository.GetById(bgroupId);
-
-            _result.error = false;
-            _result.message = "Success";
-            _result.SelectedBGroup = bGroup;
-            _result.Points = bGroup.Points;
-            return new JsonResult(_result);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
